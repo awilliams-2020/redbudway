@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4 class="modal-title font-monospace">Time zone</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <label for="timeZone" class="text-center form-label w-100 text-truncate font-monospace">
+        <small>
+            {{timeZone}}
+        </small>
+    </label>
+    <div class="input-group">
+        <input [(ngModel)]="input" type="text" class="form-control" placeholder="City, State, or Zipcode" aria-label="Users location" aria-describedby="set-location">
+        <button [ngClass]="{'disabled': input ===''}" *ngIf="!loading" (click)="getTimeZone()" class="btn btn-primary" type="button" id="set-location">Set</button>
+        <button *ngIf="loading" class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm"></span>
+        </button>
+    </div>
+    <div class="row">
+        <div class="col text-danger">
+            <small>{{errorMsg}}</small>
+        </div>
+    </div>
+</div>

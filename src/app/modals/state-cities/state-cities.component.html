@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row mb-3">
+        <div class="col">
+            <select id="states" class="form-select bg-light" multiple [(ngModel)]="selectedStates">
+                <option value="" disabled selected>Select states</option>
+                <option *ngFor="let state of unitedStates" [ngValue]="state.name">{{state.name}}</option>
+            </select>
+        </div>
+    </div>
+    <hr *ngIf="selectedStates.length !== 0">
+    <span id="cities">
+        <div class="row mb-4" *ngFor="let state of selectedStates">
+            <div class="col">
+                <select class="form-select bg-light" multiple [compareWith]="compareCities" [ngModel]="statesAndCitiesMap.get(state)" (ngModelChange)="statesAndCitiesMap.set(state, $event)">
+                    <option value="" disabled selected>{{state}} Cities</option>
+                    <option *ngFor="let city of resolveCities(state)" [ngValue]="city">{{city.name}}</option>
+                </select>
+            </div>
+        </div>
+    </span>
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <div class="col">
+            <small class="text-muted"><b class="text-dark">* </b>If there is a city missing please feel free to reach out to us at <a
+                href="mailto: service@redbudway.com">service&#64;redbudway.com</a></small>
+        </div>
+        <div class="col-auto">
+            <button id="save" type="button" class="btn btn-secondary" (click)="save()">Save</button>
+        </div>
+    </div>
+</div>

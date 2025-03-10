@@ -1,0 +1,114 @@
+<app-toast></app-toast>
+<div class="card m-auto my-5 card-width">
+    <div class="card-header">
+        <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center py-4 font-monospace">Create a coupon</h4>
+        <hr>
+        <form #cf #couponForm="ngForm" novalidate>
+            <small class="text-muted">Name of the coupon displayed on customer's invoice i.e. 25% Off</small>
+            <div class="form-group form-floating">
+                <input type="text" id="name" class="form-control bg-light" name="name" [(ngModel)]="name"
+                    aria-describedby="name" placeholder="25% Off" maxlength="40" required>
+                <label for="name">Name</label>
+                <div class="invalid-feedback">
+                    Provide name
+                </div>
+            </div>
+            <div class="input-group my-4">
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="type" name="type">
+                    <option value="amount_off">Amount Off</option>
+                    <option value="percent_off">Percent Off</option>
+                </select>
+                <ng-container *ngIf="type==='amount_off'">
+                    <span class="input-group-text" id="money-addon">$</span>
+                    <input name="amount" type="number" step="0.01" min="1" class="form-control" placeholder="15" aria-label="amount off" aria-describedby="money-addon" [(ngModel)]="amountOff">
+                    <div class="invalid-feedback">
+                        Provide dollar amount
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="type==='percent_off'">
+                    <span class="input-group-text" id="percent-addon">%</span>
+                    <input name="percent" type="number" min="1" max="100" class="form-control" placeholder="Percent" aria-label="Percent" aria-describedby="percent-addon" [(ngModel)]="percentOff">
+                    <div class="invalid-feedback">
+                        Provide percentage amount %1 - %100
+                    </div>
+                </ng-container>
+            </div>
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="" name="subscriptions" (click)="updateDuration()" [(ngModel)]="subscriptions" id="subscriptions">
+                <label class="form-check-label" for="subscriptions">
+                  Subscriptions only
+                </label>
+              </div>
+            <div class="form-floating" *ngIf="subscriptions">
+                <select class="form-select bg-light" [(ngModel)]="duration" name="duration"
+                    aria-label="type duration" required>
+                    <option value="repeating">Repeating</option>
+                    <option value="forever">Forever</option>
+                </select>
+                <label for="typeSelect">Duration</label>
+                <div class="invalid-feedback">
+                    Provide duration
+                </div>
+            </div>
+            <ng-container *ngIf="subscriptions">
+                <div class="mb-4 text-muted" [ngSwitch]="duration">
+                    <small *ngSwitchCase="'repeating'">Applies to charges in the first <span class="fw-bold" *ngIf="months>1">{{months}}</span> month<ng-container *ngIf="months>1">s</ng-container> from a subscription with this coupon applied.</small>
+                    <small *ngSwitchCase="'forever'">Applies to <span class="fw-bold">all</span> charges from a subscription with this coupon applied.</small>
+                </div>
+            </ng-container>
+            <div class="form-group mb-4 form-floating" *ngIf="subscriptions && duration==='repeating'">
+                <input type="number" min="1" id="months" class="form-control bg-light" [(ngModel)]="months" name="months"
+                    aria-describedby="months" required>
+                <label for="months">Months</label>
+                <div class="invalid-feedback">
+                    Provide months
+                </div>
+            </div>
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="" name="maxRedemption" [(ngModel)]="maxRedemption" id="maxRedemption">
+                <label class="form-check-label" for="maxRedemption">
+                  Max redemptions
+                </label>
+            </div>
+            <div class="form-group mb-4 form-floating" *ngIf="maxRedemption">
+                <input type="number" min="1" id="maxRedemptions" class="form-control bg-light" name="maxRedemptions" aria-describedby="max redemptions" [(ngModel)]="maxRedemptions" required>
+                <label for="maxRedemptions">Redemptions</label>
+            </div>
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="" name="limitedTime" [(ngModel)]="limitedTime" id="limitedTime">
+                <label class="form-check-label" for="limitedTime">
+                  Limited time
+                </label>
+            </div>
+            <div class="form-group mb-4 form-floating" *ngIf="limitedTime">
+                <input type="datetime-local" id="redeemBy" class="form-control bg-light" name="redeemBy" aria-describedby="redeemBy" [(ngModel)]="redeemBy" required>
+                <label for="redeemBy">Redeem By</label>
+            </div>
+            <div class="form-group form-floating mb-4">
+                <select class="form-select bg-light" name="services" id="services" multiple [(ngModel)]="selectedServices" required>
+                    <ng-container *ngFor="let service of services">
+                        <option *ngIf="!subscriptions || service.subscription" [ngValue]="service.id">{{service.title}}</option>
+                    </ng-container>
+                </select>
+                <label for="services">Services</label>
+                <div class="invalid-feedback">
+                    One service required
+                </div>
+            </div>
+            <hr>
+            <div class="form-group mb-4 mt-5">
+                <button class="btn btn-outline-danger w-100" (click)="close()">Cancel</button>
+            </div>
+            <div class="form-group mb-4">
+                <button *ngIf="!sent" (click)="create(couponForm)"
+                    class="btn btn-primary w-100">Create</button>
+                <button *ngIf="sent" class="btn btn-primary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

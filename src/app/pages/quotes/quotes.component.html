@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+<div class="container-fluid">
+    <div class="d-flex overflow-auto pt-4 pb-3 invisible-scrollbar">
+        <a [routerLink]="[service.category]" #categories [ngClass]="{'active': service.category === selectedCategory,'disabled': loading}"
+            routerLinkActive="bg-secondary text-light" class="btn shadow-sm border rounded-pill mx-3 align-self-center text-nowrap"
+            *ngFor="let service of services" (click)="selectCategory(service)">
+            {{service.category}}
+        </a>
+    </div>
+    <div class="d-flex overflow-auto py-3 invisible-scrollbar" *ngIf="subCategories.length !==0">
+        <a [routerLink]="[selectedCategory, subCategory.subCategory]" routerLinkActive="bg-secondary text-light"
+            type="button" class="btn shadow-sm border rounded-pill mx-3 align-self-center text-nowrap"
+            *ngFor="let subCategory of subCategories" (click)="selectSubCategory(subCategory)">
+            {{subCategory.subCategory}}
+        </a>
+    </div>
+    <a *ngIf="selectedSubCategory !== ''" class="ms-3 text-dark" (click)="openSideMenu()" href="javascript:void(0)"
+        aria-controls="offcanvasExample">
+        <small>Advanced</small>
+        <small class="ms-2" *ngIf="filters">+{{filters}}</small>
+    </a>
+    <hr>
+    <!-- <div class="row">
+        <div class="col text-center py-4" *ngIf="loading">
+            <div role="status" class="spinner spinner-border">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showRandom" class="row mb-5" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollDisabled]="loading" [scrollWindow]="true">
+        <div *ngFor="let quote of quotes" class="col-lg-4 col-md-6 py-3">
+            <app-service-card [service]="quote" [link]="['/quote', quote.quoteId]"></app-service-card>
+        </div>
+        <div class="col text-center mt-5" *ngIf="!loading && !quotes.length">
+            <h3 class="mb-5">We're sorry, but there are no<span class="dashed-underline">&nbsp;quotes&nbsp;</span>you can request <ng-container
+                    *ngIf="state!==''">in <ng-container *ngIf="city!==''">{{city}},</ng-container> {{state |
+                    titlecase}}</ng-container> yet.</h3>
+            <p>Want to offer quotes?&nbsp;<a class="link-dark" routerLink="/session/provider-signup">sign up</a></p>
+        </div>
+    </div> -->
+    <router-outlet></router-outlet>
+</div>
+<!-- <nav class="navbar fixed-bottom navbar-light bg-light border-top">
+    <div class="container-fluid">
+        <div class="form-check form-switch">
+            <input [disabled]="loading" checked class="form-check-input border-secondary pointer bg-dark" type="checkbox" id="quoteSwitch"
+                (change)="viewFixedPrices()">
+            <label class="form-check-label" for="quoteSwitch"><small>Quotes</small></label>
+        </div>
+        <a href="javascript:void(0)" class="float-end link-dark" (click)="setLocation('update')">
+            <div class="row g-1">
+                <div class="col-auto">
+                    <fa-icon [icon]="['fas','location-crosshairs']" size="lg"></fa-icon>
+                </div>
+                <div class="col" *ngIf="city !== '' || state !== ''">
+                    <small><ng-container *ngIf="city !==''">{{city}}, </ng-container> {{state}}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+</nav> -->

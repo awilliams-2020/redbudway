@@ -1,0 +1,247 @@
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<app-toast></app-toast>
+<div class="card shadow m-auto my-5 card-width" *ngIf="!loading">
+    <div class="card-header"> 
+        <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center py-4 font-monospace">Invoice</h4>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title text-center border rounded list-group-item" [ngClass]="{
+                                'list-group-item-warning': invoice.status === 'draft',
+                                'list-group-item-primary': invoice.status === 'open',
+                                'list-group-item-success': invoice.status === 'paid',
+                                'list-group-item-dark': invoice.status === 'refund' || invoice.status === 'void' ,
+                                'list-group-item-danger': invoice.status === 'uncollectible'
+                            }">
+                    {{invoice.status | titlecase}}
+                </h5>
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        <a href="{{invoice.url}}" class="text-center link-dark">{{invoice.number}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Customer</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <small class="text-muted">Name</small>
+                        <p class="mb-1 font-monospace">{{invoice.customer.name}}</p>
+                        <small class="text-muted">Email</small>
+                        <p class="mb-1 font-monospace">
+                            <a class="link-dark"
+                                href="mailto: {{invoice.customer.email}}">{{invoice.customer.email}}</a>
+                        </p>
+                        <small class="text-muted">Phone</small>
+                        <p class="mb-1 font-monospace">{{invoice.customer.phone}}</p>
+                        <small class="text-muted">Address</small>
+                        <p class="text-dark mb-1 font-monospace">{{invoice.customer.address.lineOne}}</p>
+                        <p class="text-dark mb-1 font-monospace">
+                            {{invoice.customer.address.lineTwo}}</p>
+                        <p class="text-dark mb-1 font-monospace">{{invoice.customer.address.city}},
+                            {{invoice.customer.address.state}},
+                            {{invoice.customer.address.zipCode}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Service</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <small class="text-muted">Tile</small>
+                        <p class="mb-1 font-monospace">{{invoice.service.title}}</p>
+                        <small class="text-muted">Description</small>
+                        <div class="overflow-hidden view-more font-monospace">
+                            <p #description class="mb-1">{{invoice.service.description}}</p>
+                        </div>
+                        <div class="row mb-1" *ngIf="description.offsetHeight > 90">
+                            <div class="col">
+                            </div>
+                            <div class="col-auto text-muted">
+                                <a class="link-dark" href="javascript:void(0)" (click)="viewMore($event, description)"><small>view more</small></a>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                        <small class="text-muted">Discount</small>
+                        <ng-container *ngIf="invoice.discount.valid">
+                            <p *ngIf="invoice.discount.type === 'amount_off'" class="mb-1 font-monospace">${{invoice.discount.amount}} Off&nbsp;&nbsp;<fa-icon *ngIf="invoice.status === 'draft'" (click)="removePromo()" class="text-danger pointer" [icon]="['fas','minus']"></fa-icon></p>
+                            <p *ngIf="invoice.discount.type === 'percent_off'" class="mb-1 font-monospace">{{invoice.discount.percent}}% Off&nbsp;&nbsp;<fa-icon *ngIf="invoice.status === 'draft'" (click)="removePromo()" class="text-danger pointer" [icon]="['fas','minus']"></fa-icon></p>
+                        </ng-container>
+                        <ng-container *ngIf="!invoice.discount.valid">
+                            <div class="input-group input-group-sm mb-1" *ngIf="invoice.status === 'draft'">
+                                <input type="text" id="promo" class="form-control bg-light font-monospace" [(ngModel)]="promo" maxlength="36">
+                                <button *ngIf="!verifying" class="btn btn-primary" type="button" id="apply" (click)="applyPromo()" [disabled]="promo===''">apply</button>
+                                <button *ngIf="verifying" class="btn btn-primary" type="button" id="apply" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <small class="text-danger" *ngIf="invalid">Promotion code invalid</small>
+                            <p class="mb-1" *ngIf="invoice.status !== 'draft'" >--</p>
+                        </ng-container>
+                        <small class="text-muted">Cost</small>
+                        <p class="mb-1 font-monospace">${{invoice.total.toFixed(2)}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4" *ngIf="invoice.timeSlot">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Appointment</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <small class="text-muted">Day</small>
+                        <p class="mb-1 font-monospace">{{invoice.timeSlot.startTime | date:'fullDate'}}</p>
+                        <small class="text-muted">Time</small>
+                        <p class="mb-1 font-monospace">{{invoice.timeSlot.startTime | date:'shortTime'}} -
+                            {{invoice.timeSlot.endTime | date:'shortTime'}}&nbsp;{{invoice.timeZone}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4" *ngIf="invoice.description !== '' || invoice.status === 'draft'">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                            <div class="col-auto">
+                                <b>Memo</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <a (click)="addDescription()" class="link-dark font-monospace" href="javascript:void(0)"
+                            *ngIf="invoice.status === 'draft'">
+                            <ng-container *ngIf="invoice.description === ''">
+                                Add memo to customer?
+                            </ng-container>
+                            <ng-container *ngIf="invoice.description !== ''">
+                                {{invoice.description}}
+                            </ng-container>
+                        </a>
+                        <p *ngIf="invoice.status !== 'draft'">{{invoice.description}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4" *ngIf="invoice.status==='draft' || (invoice.status !== 'draft' && invoice.images.length)">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Work Completed</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-auto pe-2 pb-2" *ngIf="invoice.status==='draft'">
+                                <button type="button" (click)="openCamera()" *ngIf="invoice.images.length<8"
+                                    aria-label="Close" class="btn btn-secondary border shadow-sm">
+                                    <fa-icon [icon]="['fas','plus']"></fa-icon>
+                                </button>
+                                <input hidden #input type="file" accept="image/png, image/jpeg" (change)="addImage($event)">
+                            </div>
+                            <div class="col-auto pe-2 pb-2" *ngFor="let image of invoice.images; index as j">
+                                <img src="{{image}}" class="d-block rounded pointer" width="50px" (click)="viewImage(j)"
+                                    height="50px" alt="...">
+                            </div>
+                        </div>
+                        <small class="text-muted">Not visible to customer</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" *ngIf="invoice.status === 'draft'">
+            <div class="col">
+                <button *ngIf="!deleteSent" [disabled]="finalizeSent" class="btn btn-danger w-100"
+                    (click)="deleteInvoice()">Delete</button>
+                <button *ngIf="deleteSent" class="btn btn-danger w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col">
+                <button *ngIf="!finalizeSent" [disabled]="deleteSent" class="btn btn-secondary w-100"
+                    (click)="finalizeInvoice()">Send</button>
+                <button *ngIf="finalizeSent" class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="invoice.status === 'open'">
+            <div class="col">
+                <button *ngIf="!voidSent" [disabled]="uncollectSent" class="btn btn-secondary w-100"
+                    (click)="voidInvoice()">Void</button>
+                <button *ngIf="voidSent" class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col">
+                <button *ngIf="!uncollectSent" [disabled]="voidSent" class="btn btn-danger w-100"
+                    (click)="markInvoiceUncollectible()">Uncollectible</button>
+                <button *ngIf="uncollectSent" class="btn btn-danger w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="invoice.status === 'uncollectible'">
+            <div class="col">
+                <button *ngIf="!voidSent" class="btn btn-secondary w-100"
+                    (click)="voidInvoice()">Void</button>
+                <button *ngIf="voidSent" class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="invoice.status === 'paid' && invoice.total !== 0">
+            <div class="col">
+                <button *ngIf="!refundSent" class="btn btn-secondary w-100"
+                    (click)="refundCustomer()">Refund</button>
+                <button *ngIf="refundSent" class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="invoice.status === 'refund'">
+            <div class="col text-center">
+                <small class="text-muted">Refunded </small>
+                <small>{{invoice.refunded | date:'short'}}</small>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="invoice.status !== 'refund'">
+            <div class="col text-center">
+                <small class="text-muted">Created </small>
+                <small>{{invoice.created | date:'short'}}</small>
+            </div>
+        </div>
+    </div>
+</div>

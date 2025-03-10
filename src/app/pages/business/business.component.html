@@ -1,0 +1,90 @@
+<!-- <app-page-loader #pageLoader></app-page-loader> -->
+<app-navbar></app-navbar>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="row g-0 text-center">
+                <div class="col">
+                    <div *ngIf="loading" class="m-auto bg-light border rounded-circle shadow image-size mb-3">
+                        <div class="spinner-border spinner-size" role="status"></div>
+                    </div>
+                    <img [hidden]="loading" height="240" width="240"
+                        class="border p-1 rounded-circle shadow mb-3 image-size" [src]="provider.image"
+                        (load)="onLoad()" alt="Card image cap">
+                </div>
+            </div>
+            <h1 class="font-monospace text-center">{{provider.name}}</h1>
+            <div class="row">
+                <div class="col-auto m-auto">
+                    <ng-template #star let-fill="fill">
+                        <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                        </span>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col text-muted text-end">
+                            <ngb-rating [starTemplate]="star" [(rate)]="provider.rating" [max]="5" [readonly]="true">
+                            </ngb-rating>
+                            ({{provider.reviews}})
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-end text-muted">
+                            <fa-icon [icon]="['fas','briefcase']"></fa-icon>
+                            &nbsp;Jobs ({{provider.jobs}})
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-end text-muted">
+                            <fa-icon [icon]="['fas','repeat']"></fa-icon>
+                            &nbsp;Repeat clients ({{provider.repeat}})
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 px-2" *ngIf="provider.description">
+                <div class="col font-monospace">
+                    {{provider.description}}
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 mt-lg-0">
+            <div class="row services-height bg-light px-2">
+                <div class="col-12 py-3" *ngFor="let fixedPrice of fixedPrices">
+                    <app-service-card [service]="fixedPrice"
+                        [link]="['/fixed-price', fixedPrice.priceId]"></app-service-card>
+                </div>
+                <div class="col-12 py-3" *ngFor="let quote of quotes">
+                    <app-service-card [service]="quote" [link]="['/quote', quote.quoteId]"></app-service-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center mt-5">
+        <div class="col-4 col-md-3" *ngIf="provider.email">
+            <a class="btn btn-light shadow-sm border rounded-pill text-nowrap" href="mailto:{{provider.email}}">
+                <fa-icon class="me-2" [icon]="['fas','envelope']"></fa-icon>
+                Email
+            </a>
+        </div>
+        <div class="col-4 col-md-3" *ngIf="provider.address?.lineOne">
+            <a class="btn btn-light shadow-sm border rounded-pill text-nowrap"
+                href="https://maps.google.com/?q={{address}}">
+                <fa-icon class="me-2" [icon]="['fas','location-dot']"></fa-icon>
+                Directions
+            </a>
+        </div>
+        <div class="col-4 col-md-3" *ngIf="provider.number">
+            <a class="btn btn-light shadow-sm border rounded-pill text-nowrap" href="tel:{{provider.number}}">
+                <fa-icon class="me-2" [icon]="['fas','phone']"></fa-icon>
+                Call
+            </a>
+        </div>
+        <div class="col col-md-3">
+            <a href="javascript:void(0)" class="btn btn-light shadow-sm border rounded-pill text-nowrap" (click)="share()">
+                <fa-icon class="me-2" [icon]="['fas','share-alt']"></fa-icon>
+                Share
+            </a>
+        </div>
+    </div>
+</div>

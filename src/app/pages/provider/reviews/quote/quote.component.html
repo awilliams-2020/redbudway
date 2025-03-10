@@ -1,0 +1,45 @@
+<ng-template #modal let-modal>
+    <div class="modal-header">
+        <img width="25" src="assets/images/icon.png">
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body bg-light">
+        <textarea class="w-100" rows="8" placeholder="Response" [(ngModel)]="response" (ngModelChange)="removeErr($event)">{{response}}</textarea>
+        <small *ngIf="error" class="text-danger">Response required</small>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="respond(modal)">Respond</button>
+    </div>
+</ng-template>
+<ng-container *ngFor="let review of reviews">
+    <div class="card w-100 my-3">
+        <div class="card-header">
+            {{review.customer}}
+            <ng-template #star let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                </span>
+            </ng-template>
+            <ngb-rating [starTemplate]="star" [(rate)]="review.rating" [max]="5" [readonly]="true">
+            </ngb-rating>
+            <small class="float-end">{{review.date}}</small>
+        </div>
+        <div class="card-body text-muted" *ngIf="review.message !== ''">
+            {{review.message}}
+        </div>
+    </div>
+    <a class="  float-end mb-3" href="javascript:void(0)"
+        (click)="writeResponse(review.id, modal)">Reply?</a>
+</ng-container>
+<div class="row m-4" *ngIf="loading">
+    <div class="col text-center">
+        <div role="status" class="spinner-border ">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+<div class="row m-4" *ngIf="!loading && reviews.length == 0">
+    <div class="col text-center">
+        <p class="m-0">You're all caught up!</p>
+    </div>
+</div>

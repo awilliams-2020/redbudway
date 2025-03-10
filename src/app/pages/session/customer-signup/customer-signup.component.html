@@ -1,0 +1,151 @@
+<div class="container px-4">
+    <div #card class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center py-4 alice-font">Sign Up</h4>
+            <hr>
+            <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="accountError">
+                Error creating acccount
+            </ngb-alert>
+            <form #sf #signUpForm="ngForm" novalidate>
+                <div class="form-group my-4 form-floating">
+                    <input type="text" [(ngModel)]="firstName" id="firstName" class="form-control bg-light" name="firstName"
+                        aria-describedby="firstName" placeholder="" required>
+                    <label for="firstName">First Name</label>
+                    <div class="invalid-feedback">
+                        Provide first name
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input type="text" [(ngModel)]="lastName" id="lastName" class="form-control bg-light" name="lastName"
+                        aria-describedby="lastName" placeholder="" required>
+                    <label for="name">Last Name</label>
+                    <div class="invalid-feedback">
+                        Provide last name
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input #numberInput="ngModel" [(ngModel)]="number" type="text" id="number"
+                        class="form-control bg-light" name="number" aria-describedby="number"
+                        pattern="^\d{3}-\d{3}-\d{4}$" placeholder="" required (ngModelChange)="addHyphen($event)" maxlength="12">
+                    <label for="number">Phone Number</label>
+                    <div *ngIf="numberInput.invalid" class="invalid-feedback">
+                        <div *ngIf="numberInput.errors?.['required']">
+                            Provide phone number
+                        </div>
+                        <div *ngIf="numberInput.errors?.['pattern']">
+                            Number format 000-000-0000
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input type="text" [(ngModel)]="addressLineTwo" id="addressLineOne" class="form-control bg-light" name="addressLineOne"
+                        aria-describedby="addressLineOne" placeholder="" required>
+                    <label for="name">Address Line One</label>
+                    <div class="invalid-feedback">
+                        Provide address
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input type="text" [(ngModel)]="addressLineOne" id="addressLineTwo" class="form-control bg-light" name="addressLineTwo"
+                        aria-describedby="addressLineTwo" placeholder="">
+                    <label for="name">Address Line Two</label>
+                </div>
+                <div class="form-floating my-4">
+                    <select class="form-select bg-light" name="state" [(ngModel)]="state" id="state" aria-label="state selection" (change)="selectedState($event)" required>
+                        <option value="" selected disabled>State</option>
+                        <option *ngFor="let state of states" value="{{state.state}}">{{state.state}}</option>
+                    </select>
+                    <label for="state">Select State</label>
+                    <div class="invalid-feedback">
+                        Provide state
+                    </div>
+                </div>
+                <div class="form-floating my-4">
+                    <select class="form-select bg-light" name="city" [(ngModel)]="city" id="city" aria-label="city selection" required>
+                        <option value="" selected disabled>City</option>
+                        <option *ngFor="let city of cities" value="{{city.name}}">{{city.name}}</option>
+                    </select>
+                    <label for="city">Select City</label>
+                    <div class="invalid-feedback">
+                        Provide city
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input #zipcodeInput="ngModel" [(ngModel)]="zipcode" type="text" id="zipcode"
+                        class="form-control bg-light" name="zipcode" aria-describedby="zipcode"
+                        minlength="5" maxlength="5" placeholder="" required>
+                    <label for="zipcode">Zip Code</label>
+                    <div *ngIf="zipcodeInput.invalid" class="invalid-feedback">
+                        <div *ngIf="zipcodeInput.errors?.['required']">
+                            Provide zip code
+                        </div>
+                        <div *ngIf="zipcodeInput.errors?.['pattern']">
+                            Zip code needs to be 5 digits
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating my-4">
+                    <input #emailInput="ngModel" [(ngModel)]="email" type="email" id="email" class="form-control bg-light" name="email"
+                        aria-describedby="email" placeholder="" required appEmailValidation>
+                    <label for="email">Email</label>
+                    <div *ngIf="emailInput.invalid" class="invalid-feedback">
+                        <div *ngIf="emailInput.errors?.['required']">
+                            Provide email
+                        </div>
+                        <div *ngIf="emailInput.errors?.['email'] && email !== ''">
+                            Invalid email format
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input #passw="ngModel" [(ngModel)]="password" [type]="type" id="password"
+                        class="form-control bg-light" name="password" aria-describedby="password" placeholder="" minlength="8"
+                        required>
+                    <label for="password">Password</label>
+                    <div *ngIf="passw.invalid" class="invalid-feedback">
+                        <div *ngIf="passw.errors?.['required']">
+                            Password required
+                        </div>
+                        <div *ngIf="passw.errors?.['minlength']">
+                            Minimum of 8 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-4 mb-2 form-floating">
+                    <input #verifyPassw="ngModel" [(ngModel)]="confirmPassword" [type]="type" id="confirmPassword" class="form-control bg-light" name="confirmPassword"
+                        aria-describedby="confirmPassword" placeholder="" required appPasswordValidation="{{passw.value}}">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div *ngIf="verifyPassw.invalid" class="invalid-feedback">
+                        <div *ngIf="verifyPassw.errors?.['required']">
+                            Verify password
+                        </div>
+                        <div *ngIf="verifyPassw.errors?.['password'] && verifyPassw.value !== ''">
+                            Passwords don't match
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input border-secondary" type="checkbox" value="" id="showPassword"
+                        (change)="showPassword()">
+                    <label class="form-check-label" for="showPassword">
+                        <small>show password</small>
+                    </label>
+                </div>
+                <div class="form-group mb-4">
+                    <button *ngIf="!disableSignUp" (click)="signup(signUpForm)" class="btn btn-secondary w-100">Sign Up</button>
+                    <button *ngIf="disableSignUp" class="btn btn-secondary w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <small><a class="link-dark" routerLink="/session/customer-login">Already a customer?</a></small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

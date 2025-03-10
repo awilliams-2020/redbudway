@@ -1,0 +1,123 @@
+<app-navbar></app-navbar>
+<app-toast></app-toast>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <div id="imageCarousel" class="carousel slide mb-3 carousel-fade text-center" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <ng-container *ngFor="let image of service.images;index as i">
+                        <button type="button" data-bs-target="#imageCarousel" attr.data-bs-slide-to="{{i}}" class="bg-danger"
+                            [ngClass]="{'active': i ==0}" aria-current="true" aria-label="Slide i+1"></button>
+                    </ng-container>
+                </div>
+                <div class="carousel-inner">
+                    <div *ngFor="let image of service.images; index as j" class="carousel-item"
+                        [ngClass]="{'active': j==0}">
+                        <img src="{{image}}" class="rounded w-100 border image-size shadow">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <h1 class="font-monospace text-center">{{service.title}}</h1>
+            <ng-template #star let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                </span>
+            </ng-template>
+            <div class="hstack gap-2">
+                <ngb-rating class="ms-auto" [starTemplate]="star" [(rate)]="rating" [max]="5" [readonly]="readOnly"
+                    (rateChange)="reviewQuote()"></ngb-rating>
+                <a *ngIf="service.reviews" class="link-dark me-auto" href="javascript:void(0)"
+                    (click)="viewReviews()">({{service.reviews}})</a>
+                <span class="align-self-center me-auto" *ngIf="!service.reviews">({{service.reviews}})</span>
+            </div>
+            <div class="row mt-4" *ngIf="service.description">
+                <div class="col font-monospace">
+                    {{service.description}}
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.specialties.length">
+                <div class="col font-monospace">
+                    <span *ngFor="let specialty of service.specialties"
+                        class="badge rounded-pill shadow-sm me-2 bg-custom">{{specialty}}</span>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.statesAndCities.length">
+                <div class="col">
+                    <div class="d-flex flex-wrap flex-row py-2"
+                    *ngFor="let stateAndCities of service.statesAndCities">
+                    <span class="fw-bold me-3">{{stateAndCities.state}}</span>
+                    <span class="view-more overflow-hidden">
+                        <span #stateCities>
+                            <span class="font-monospace"
+                                *ngFor="let city of stateAndCities.cities; let i = index">
+                                {{city.name}}<span
+                                    *ngIf="i !== stateAndCities.cities.length-1">,</span>
+                            </span>
+                        </span>
+                    </span>
+                    <div class="d-flex justify-content-center w-100"
+                        *ngIf="stateCities.offsetHeight > 25">
+                        <a class="text-muted" href="javascript:void(0)"
+                            (click)="viewMore($event, stateCities)">
+                            <small>view more</small>
+                        </a>
+                    </div>
+                </div>  
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mt-4">
+                <textarea [disabled]="disableRequest" class="w-100 form-control bg-light box-height" placeholder="Describe your request to {{business.name}}." [(ngModel)]="requestMessage" maxlength="450" id="requestArea">{{requestMessage}}</textarea>
+                <label for="requestArea">Request&nbsp;<span *ngIf="requestMessage.length > 0 && requestMessage.length < 120" class="text-danger">{{requestMessage.length}}</span></label>
+            </div>
+            <div class="row mt-2">
+                <div class="col-auto ps-2 pe-0 pb-2">
+                    <button type="button" (click)="openFileExplorer()" aria-label="Close" *ngIf="images.length<9"
+                        class="btn btn-secondary border button-size">
+                        <fa-icon [icon]="['fas','plus']"></fa-icon>
+                    </button>
+                </div>
+                <div class="col-auto ps-2 pe-0 pb-2" *ngFor="let image of images; index as j">
+                    <img  src="{{image}}" class="d-block rounded pointer border shadow" width="50px" (click)="viewImage(j)"
+                        height="50px" alt="...">
+                </div>
+            </div>  
+            <input #input hidden type="file" id="images" accept="image/png, image/jpeg" class="form-control bg-light"
+                placeholder="" (change)="addImage($event)">
+            <div class="form-group my-4 text-center">
+                <button *ngIf="!disableRequest" class="btn btn-primary w-50" (click)="requestQuote()">Request
+                    Quote</button>
+                <button *ngIf="disableRequest" class="btn btn-primary w-50" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col text-center">
+            <img *ngIf="business.icon" class="rounded-circle icon" src="{{business.icon}}">&nbsp;
+            <a class="link-dark font-monospace" href="javascript:void(0)" (click)="viewProfile()">
+                {{business.name}}
+            </a>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col text-center">
+            <a href="javascript:void(0)" class="link-dark" (click)="share()">
+                <fa-icon [icon]="['fas','share-alt']" size="xl"></fa-icon>
+            </a>
+        </div>
+    </div>
+</div>

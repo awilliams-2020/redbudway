@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body p-0">
+    <div *ngIf="loading" class="py-5 text-center">
+        <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+    </div>
+    <img src="{{image}}" class="w-100" (load)="onLoad()">
+</div>
+<div class="modal-footer" *ngIf="status === 'draft'">
+    <button type="button" (click)="activeModal.close(true)" class="btn btn-secondary">Delete</button>
+</div>

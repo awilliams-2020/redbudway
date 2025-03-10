@@ -1,0 +1,31 @@
+<div class="row mb-4">
+    <div class="col-12 mb-3 col-lg-3 mb-lg-0">
+        <select class="form-select" [(ngModel)]="routePath" (change)="selectRoute()">
+            <option value="./manual">Manual</option>
+            <option value="./">Invoices</option>
+            <option value="./subscriptions">Subscriptions</option>
+            <option value="./quotes">Quotes</option>
+        </select>
+    </div>
+    <div class="col" *ngIf="routePath !== './subscriptions'" >
+        <select class="form-select" [(ngModel)]="quarter" (change)="changeQuarter()">
+            <option value=1>Q1</option>
+            <option value=2>Q2</option>
+            <option value=3>Q3</option>
+            <option value=4>Q4</option>
+        </select>
+    </div>
+    <div class="col" *ngIf="routePath !== './subscriptions'">
+        <!-- [disabled]="loading" -->
+        <select class="form-select" aria-label="year select" [(ngModel)]="year" (change)="changeYear()">
+            <option *ngFor="let year of years" value={{year}}>{{year}}</option>
+        </select>
+    </div>
+    <!-- <div class="col-12 mt-3 col-lg-3 mt-lg-0">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-secondary" type="button" id="button-addon2">Search</button>
+        </div>
+    </div> -->
+</div>
+<router-outlet ></router-outlet>

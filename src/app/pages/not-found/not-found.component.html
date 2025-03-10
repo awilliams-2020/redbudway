@@ -1,0 +1,18 @@
+<div class="container px-4">
+    <div class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+            <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="card-body my-5 text-center">
+            <fa-icon [icon]="['fas','question']" size="6x"></fa-icon>
+            <h2 class="text-muted mt-4">Error 404...</h2>
+            <h1 class="alice-font">Page Not Found</h1>
+            <p>We looked everywhere for this page. Are you sure this is right?</p>
+            <a routerLink="/" class="text-decoration-none link-dark">
+                <fa-icon [icon]="['fas','angle-left']" size="xl"></fa-icon>&nbsp;
+            </a>
+            <a routerLink="/" class="link-dark">Return</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="offcanvas-header">
+    <h5 class="offcanvas-title">Advanced Filtering</h5>
+    <!-- <small class="text-muted">Services ({{serviceCount}})</small> -->
+    <button
+        type="button"
+        class="btn-close text-reset"
+        aria-label="Close"
+        (click)="activeOffcanvas.dismiss('Cross click')"
+    ></button>
+</div>
+<hr class="m-0">
+<div class="offcanvas-body pb-5" style="height: 100vh;">
+    <div class="row mb-5">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Specialties</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div *ngFor="let specialty of specialties; index as i" class="btn-group" role="group"
+                        aria-label="Basic checkbox toggle button group">
+                        <input type="checkbox" class="btn-check" id="{{i}}" autocomplete="off" value="{{specialty}}"
+                            (change)="selectSpecialty($event)" [checked]="selectedSpecialties.includes(specialty)">
+                        <label class="btn btn-outline-dark shadow-sm rounded-pill mb-3 me-3 text-nowrap"
+                            for="{{i}}">{{specialty}}</label>
+                    </div>
+                    <small class="text-muted" *ngIf="!specialties.length">We have no specialties for
+                        {{subCategory}} yet.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="isFixedPrice">
+        <hr>
+        <div class="row mb-5">
+            <div class="col">
+                <label for="minPrice" class="form-label">Min</label>
+                <div class="input-group">
+                    <input [(ngModel)]="min" type="number" class="form-control" placeholder="0" aria-label="minPrice">
+                </div>
+            </div>
+            <div class="col">
+                <label for="maxPrice" class="form-label">Max</label>
+                <div class="input-group">
+                    <input [(ngModel)]="max" type="number" class="form-control" placeholder="0" aria-label="maxPrice">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" [ngClass]="{'mb-5': !fromDate, 'mb-3': fromDate}">
+            <div class="col">
+                <div class="row">
+                    <div class="col text-center">
+                        <label class="form-label">Availability</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <ng-template #t let-date let-focused="focused" let-disabled="disabled">
+                            <span
+                                class="custom-day"
+                                [class.focused]="focused"
+                                [class.range]="isRange(date)"
+                                [class.faded]="isHovered(date) || isInside(date)"
+                                (mouseenter)="hoveredDate = date"
+                                (mouseleave)="hoveredDate = null"
+                                [class.disabled]="disabled"
+                            >
+                                {{ date.day }}
+                            </span>
+                        </ng-template>
+                        <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [navigation]="'arrows'" [displayMonths]="1" [dayTemplate]="t" outsideDays="visible" [markDisabled]="isDisabled">
+                        </ngb-datepicker>
+                    </div>
+                </div>
+                <div class="row mt-2" *ngIf="fromDate">
+                    <div class="col text-center">
+                        <label class="form-label"><ng-container *ngIf="fromDate">{{fromDate.month}}/{{fromDate.day}}/{{fromDate.year}}</ng-container><ng-container *ngIf="toDate"> - {{toDate.month}}/{{toDate.day}}/{{toDate.year}}</ng-container></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <hr>
+    <div class="row mb-5">
+        <div class="col">
+            <button type="button" class="btn btn-secondary w-100" (click)="resetFilters()">Reset</button>            
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-primary w-100" (click)="selectFilters()">Filter</button>            
+        </div>
+    </div>
+</div>

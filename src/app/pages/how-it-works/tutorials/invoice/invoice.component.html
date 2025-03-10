@@ -1,0 +1,188 @@
+<app-navbar></app-navbar>
+<div class="container px-4">
+    <div class="card shadow-sm m-auto my-5 card-width">
+        <div class="card-header">
+            <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center py-4 font-monospace">Invoice</h4>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title text-center border rounded list-group-item" [ngClass]="{
+                                    'list-group-item-warning': invoice.status === 'draft',
+                                    'list-group-item-primary': invoice.status === 'open',
+                                    'list-group-item-success': invoice.status === 'paid',
+                                    'list-group-item-dark': invoice.status === 'refund' || invoice.status === 'void' ,
+                                    'list-group-item-danger': invoice.status === 'uncollectible'
+                                }">
+                        {{invoice.status | titlecase}}
+                    </h5>
+                    <div class="row mb-4">
+                        <div class="col text-center">
+                            <a href="{{invoice.url}}" class="text-center link-dark">{{invoice.number}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card rounded shadow-sm bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                                <div class="col-auto">
+                                    <b>Customer</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <small class="text-muted">Name</small>
+                            <p class="mb-1 text-truncate">{{invoice.customer.name}}</p>
+                            <small class="text-muted">Email</small>
+                            <p class="mb-1 text-truncate">
+                                <a class="text-truncate link-dark"
+                                    href="mailto: {{invoice.customer.email}}">{{invoice.customer.email}}</a>
+                            </p>
+                            <small class="text-muted">Phone</small>
+                            <p class="mb-1 text-truncate">{{invoice.customer.phone}}</p>
+                            <small class="text-muted">Address</small>
+                            <p class="text-dark mb-1 text-truncate">{{invoice.customer.address.line1}}</p>
+                            <p *ngIf="invoice.customer.address.line2.length !== 0" class="text-dark mb-1 text-truncate">
+                                {{invoice.customer.address.line2}}</p>
+                            <p class="text-dark mb-1 text-truncate">{{invoice.customer.address.city}},
+                                {{invoice.customer.address.state}},
+                                {{invoice.customer.address.postal_code}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card rounded shadow-sm bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                                <div class="col-auto">
+                                    <b>Appointment</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <small class="text-muted">Day</small>
+                            <p class="mb-1">{{invoice.timeSlot.startTime | date:'fullDate'}}</p>
+                            <small class="text-muted">Time</small>
+                            <p class="mb-1">{{invoice.timeSlot.startTime | date:'shortTime'}} -
+                                {{invoice.timeSlot.endTime | date:'shortTime'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card rounded shadow-sm bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                                <div class="col-auto">
+                                    <b>Service</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <small class="text-muted">Tile</small>
+                            <p class="mb-1">{{invoice.service.title}}</p>
+                            <small class="text-muted">Description</small>
+                            <p class="mb-1 overflow">{{invoice.service.description}}</p>
+                            <small class="text-muted">Cost</small>
+                            <p class="mb-1">{{invoice.total}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card rounded shadow-sm bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                                <div class="col-auto">
+                                    <b>Memo</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <span id="memo">
+                                <a class="link-dark" (click)="addDescription()" href="javascript:void(0)"
+                                    *ngIf="invoice.status === 'draft'">
+                                    <ng-container *ngIf="invoice.description === ''">
+                                        Add memo to customer?
+                                    </ng-container>
+                                    <ng-container *ngIf="invoice.description !== ''">
+                                        {{invoice.description}}
+                                    </ng-container>
+                                </a>
+                            </span>
+                            <p *ngIf="invoice.status !== 'draft'">{{invoice.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <span id="draft">
+                <div class="row" *ngIf="invoice.status === 'draft'">
+                    <div class="col">
+                        <button *ngIf="!deleteSent" [disabled]="finalizeSent" class="btn btn-danger w-100"
+                            (click)="deleteInvoice()">Delete</button>
+                        <button *ngIf="deleteSent" class="btn btn-danger w-100" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button *ngIf="!finalizeSent" [disabled]="deleteSent" class="btn btn-secondary w-100"
+                            (click)="finalizeInvoice()">Send</button>
+                        <button *ngIf="finalizeSent" class="btn btn-secondary w-100" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </span>
+            <div class="row" *ngIf="invoice.status === 'open'">
+                <div class="col">
+                    <button *ngIf="!voidSent" [disabled]="uncollectSent" class="btn btn-secondary w-100"
+                        (click)="voidInvoice()">Void</button>
+                    <button *ngIf="voidSent" class="btn btn-secondary w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="col">
+                    <button *ngIf="!uncollectSent" [disabled]="voidSent" class="btn btn-danger w-100"
+                        (click)="markInvoiceUncollectible()">Uncollectible</button>
+                    <button *ngIf="uncollectSent" class="btn btn-danger w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row" *ngIf="invoice.status === 'uncollectible'">
+                <div class="col">
+                    <button *ngIf="!voidSent" class="btn btn-secondary w-100"
+                        (click)="voidInvoice()">Void</button>
+                    <button *ngIf="voidSent" class="btn btn-secondary w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <small class="text-muted">Invoice created {{invoice.created |
+                        date:'medium'}}</small>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h4 class="modal-title font-monospace">Share {{title}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <p class="p-0">Share this link via</p>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-auto me-3">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{url}}" class="facebook-color" target="_blank"
+                rel="noopener noreferrer">
+                <fa-icon size="2x" [icon]="['fab','facebook']"></fa-icon>
+            </a>
+        </div>
+        <div class="col-auto me-3">
+            <a href="https://twitter.com/intent/tweet?url={{url}}" class="twitter-color" target="_blank"
+                rel="noopener noreferrer">
+                <fa-icon size="2x" [icon]="['fab','twitter']"></fa-icon>
+            </a>
+        </div>
+        <div class="col-auto me-3">
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{url}}" class="linkedin-color" target="_blank"
+                rel="noopener noreferrer">
+                <fa-icon size="2x" [icon]="['fab','linkedin']"></fa-icon>
+            </a>
+        </div>
+        <div class="col-auto">
+            <a href="mailto:?&subject=Redbud Way Marketplace&body=Check out this service on Redbud Way%0D%0A{{url}}"
+                class="email-color" target="_blank" rel="noopener noreferrer">
+                <fa-icon size="2x" [icon]="['fas','envelope']"></fa-icon>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="p-0">Or copy link</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-group">
+            <span class="input-group-text" id="link-icon"><fa-icon class="text-dark" [icon]="['fas','link']"></fa-icon></span>
+            <input #shareLink type="text" class="form-control" [value]="url" aria-label="Username" aria-describedby="link-icon" readonly>
+            <button class="btn btn-secondary" ngbTooltip="Copied!" triggers="click:blur" type="button" (click)="copy(shareLink)">Copy</button>
+          </div>
+    </div>
+</div>

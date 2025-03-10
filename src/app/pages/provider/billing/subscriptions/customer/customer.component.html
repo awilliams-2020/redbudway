@@ -1,0 +1,163 @@
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<app-toast></app-toast>
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card border-0" *ngIf="!loading">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto">
+                        <b>Customer</b>
+                    </div>
+                    <div class="col">
+                        <hr>
+                    </div>
+                </div>
+                <small class="text-muted">Name</small>
+                <p class="mb-1 font-monospace">{{customer.name}}</p>
+                <small class="text-muted">Email</small>
+                <p class="mb-1 font-monospace">
+                    <a class="link-dark" href="mailto: {{customer.email}}">{{customer.email}}</a>
+                </p>
+                <small class="text-muted">Phone</small>
+                <p class="mb-1 font-monospace">{{customer.phone}}</p>
+                <small class="text-muted">Address</small>
+                <p class="text-dark mb-1 font-monospace">{{customer.address.lineOne}}</p>
+                <p class="text-dark mb-1 font-monospace">{{customer.address.lineTwo}}</p>
+                <p class="text-dark mb-1 font-monospace">{{customer.address.city}},
+                    {{customer.address.state}},
+                    {{customer.address.zipCode}}</p>
+                <!-- <h4 class="card-title text-center py-4 font-monospace">Customer Subscriptions</h4> -->
+        
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4" *ngFor="let subscription of customer.subscriptions; let i = index">
+        <div class="card shadow" *ngIf="!loading">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            <b>Service #{{i+1}}</b>
+                        </div>
+                        <div class="col">
+                            <hr>
+                        </div>
+                    </div>
+                    <small class="text-muted">Tile</small>
+                    <p class="mb-1 font-monospace">{{subscription.title}}</p>
+                    <small class="text-muted" *ngIf="subscription.description !== ''">Description</small>
+                    <p class="mb-1 overflow font-monospace">{{subscription.description}}</p>
+                    <small class="text-muted">Cost</small>
+                    <p class="mb-3 font-monospace">${{subscription.total / 100}}</p>
+                    <div class="accordion " id="timeSlots">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed font-monospace text-center" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="false"
+                                    aria-controls="collapseOne">
+                                    Time Slots
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="headingOne" data-bs-parent="#timeSlots">
+                                <div class="accordion-body px-2 py-0">
+                                    <ul class="list-group list-group-flush">
+                                        <li *ngFor="let detail of subscription.details; let j = index"
+                                            class="list-group-item px-0">
+                                            <div class="row g-0">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col mb-2 text-decoration-underline">
+                                                            <span class="badge rounded-pill" [ngClass]="{
+                                                                    'bg-success': detail.status === 'active',
+                                                                    'bg-secondary': detail.status === 'canceled',
+                                                                    'bg-danger': detail.status === 'incomplete' || detail.status === 'incomplete_expired' || detail.status === 'past_due'
+                                                                    }"><small>{{detail.status |
+                                                                    titlecase}}</small></span>
+                                                        </div>
+                                                    </div>
+                                                    <ng-container *ngFor="let timeSlot of detail.timeSlots">
+                                                        <ng-container
+                                                            *ngIf="subscription.interval === 'week'">
+                                                            <div class="row">
+                                                                <div class="col text-muted">
+                                                                    {{timeSlot.startTime | date:'EEEE'}}s
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    {{timeSlot.startTime | date:'h:mm'}} -
+                                                                    {{timeSlot.endTime |
+                                                                    date:'shortTime'}}&nbsp;{{subscription.timeZone}}
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container
+                                                            *ngIf="subscription.interval === 'month'">
+                                                            <div class="row">
+                                                                <div class="col text-muted">
+                                                                    Every {{timeSlot.startTime | date:'d'}}
+                                                                    of the month
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    {{timeSlot.startTime | date:'h:mm'}} -
+                                                                    {{timeSlot.endTime |
+                                                                    date:'shortTime'}}&nbsp;{{subscription.timeZone}}
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container
+                                                            *ngIf="subscription.interval === 'year'">
+                                                            <div class="row">
+                                                                <div class="col text-muted">
+                                                                    Every {{timeSlot.startTime |
+                                                                    date:'LLLL'}}
+                                                                    {{timeSlot.startTime | date:'d'}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    {{timeSlot.startTime | date:'h:mm'}} -
+                                                                    {{timeSlot.endTime |
+                                                                    date:'shortTime'}}&nbsp;{{subscription.timeZone}}
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <div class="row mt-2" *ngIf="detail.invoiceId">
+                                                        <div class="col">
+                                                            <a [routerLink]="detail.invoiceId"
+                                                                class="link-dark"
+                                                                [queryParams]="{subscriptionId: detail.subscriptionId}">Latest
+                                                                invoice</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto" *ngIf="detail.status !== 'canceled'">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input border-secondary"
+                                                            (change)="selectSubscriptionToCancel(i, j)"
+                                                            type="checkbox" value="" id="flexCheckDefault">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <button type="button" *ngIf="subscriptionsToCancel.length && !cancelSent" (click)="cancelSubscriptions()" class="w-100 btn btn-danger">Cancel</button>
+                                        <button type="button" *ngIf="cancelSent" disabled class="w-100 btn btn-danger">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                        </button>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

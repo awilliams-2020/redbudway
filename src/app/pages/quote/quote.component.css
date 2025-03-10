@@ -1,0 +1,34 @@
+.box-height {
+    height: 180px;
+}
+
+.view-more {
+    height: 50px;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
+.star {
+    font-size: 24px !important;
+}
+
+.card-width {
+    max-width: 920px;;
+}
+
+.image-size {
+    max-width: 360px;
+}
+
+.button-size {
+    width: 50px;
+    height: 50px;
+}
+
+.add-images {
+    width: 50px;
+    height: 50px
+}

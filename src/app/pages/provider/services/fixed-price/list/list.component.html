@@ -1,0 +1,18 @@
+<div class="row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollDisabled]="false" [scrollWindow]="true">
+    <div class="col-lg-4 col-md-6 py-3">
+        <button [disabled]="loading" class="btn btn-light border shadow-sm w-100 h-100" (click)="createFixedPrice()">
+            <fa-icon size="xl" [icon]="['fas','plus']"></fa-icon>&nbsp;
+            <span>Create service</span>
+        </button>
+    </div>
+    <div class="col-lg-4 col-md-6 py-3" *ngFor="let fixedPrice of fixedPrices">
+        <app-service-card [service]="fixedPrice" [link]="[fixedPrice.priceId]"></app-service-card>
+    </div>
+</div>
+<div class="row m-4" *ngIf="loading">
+    <div class="col text-center">
+        <div role="status" class="spinner-border ">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="error">
+        Error updating address
+    </ngb-alert>
+    <form #af #addressForm="ngForm" novalidate>
+        <div class="form-group my-4 form-floating">
+            <input [disabled]="isDisabled" type="text" [(ngModel)]="lineOne" id="addressLineOne" class="form-control bg-light" name="addressLineOne"
+                aria-describedby="addressLineOne" placeholder="" required>
+            <label for="name">Address Line One</label>
+            <div class="invalid-feedback">
+                Provide address
+            </div>
+        </div>
+        <div class="form-group my-4 form-floating">
+            <input [disabled]="isDisabled" type="text" [(ngModel)]="lineTwo" id="addressLineTwo" class="form-control bg-light" name="addressLineTwo"
+                aria-describedby="addressLineTwo" placeholder="">
+            <label for="name">Address Line Two</label>
+        </div>
+        <div class="form-floating my-4">
+            <select [disabled]="isDisabled" class="form-select bg-light" name="state" [(ngModel)]="state" id="state" aria-label="state selection" (change)="selectedState($event)" required>
+                <option value="" selected disabled>State</option>
+                <option *ngFor="let state of states" value="{{state.state}}">{{state.state}}</option>
+            </select>
+            <label for="state">Select State</label>
+            <div class="invalid-feedback">
+                Provide state
+            </div>
+        </div>
+        <div class="form-floating my-4">
+            <select [disabled]="isDisabled" class="form-select bg-light" name="city" [(ngModel)]="city" id="city" aria-label="city selection" required>
+                <option value="" selected disabled>City</option>
+                <option *ngFor="let city of cities" value="{{city.name}}">{{city.name}}</option>
+            </select>
+            <label for="city">Select City</label>
+            <div class="invalid-feedback">
+                Provide city
+            </div>
+        </div>
+        <div class="form-group mb-4 form-floating">
+            <input [disabled]="isDisabled" #zipcodeInput="ngModel" [(ngModel)]="zipCode" type="text" id="zipcode"
+                class="form-control bg-light" name="zipcode" aria-describedby="zipcode"
+                minlength="5" maxlength="5" placeholder="" required>
+            <label for="zipcode">Zip Code</label>
+            <div *ngIf="zipcodeInput.invalid" class="invalid-feedback">
+                <div *ngIf="zipcodeInput.errors?.['required']">
+                    Provide zip code
+                </div>
+                <div *ngIf="zipcodeInput.errors?.['minlength']">
+                    Zip code needs to be 5 digits
+                </div>
+            </div>
+        </div>
+        <div class="form-group mb-4 float-end">
+            <button *ngIf="!isDisabled" (click)="update(addressForm)" class="btn btn-secondary">Update</button>
+            <button *ngIf="isDisabled" class="btn btn-secondary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body text-center p-5">
+    <ng-container *ngIf="type === 'service'">
+        <h2 class="text-muted">Service is booked...</h2>
+        <h1 class="alice-font">Thank You For Booking</h1>
+        <p>You will receive a confirmation email shortly listing the services you booked. If you do not receive this email please reach out to <a href="mailto:service@redbudway.com">service&#64;redbudway.com</a></p>
+    </ng-container>
+    <ng-container *ngIf="type === 'quote'">
+        <h2 class="text-muted">Quote requested...</h2>
+        <h1>Thank You For Your Request</h1>
+        <p>You will receive a confirmation email shortly. If you do not receive this email please reach out to <a class="" href="mailto:service@redbudway.com">service&#64;redbudway.com</a></p>
+    </ng-container>
+</div>

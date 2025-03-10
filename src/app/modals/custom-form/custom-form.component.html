@@ -1,0 +1,183 @@
+<div class="modal-header">
+    <h4 class="modal-title font-monospace">Custom booking form</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div [ngSwitch]="step">
+    <div *ngSwitchCase="'edit'">
+        <div class="modal-body">
+            <p>
+                When a service is booked an email with the customer's <b>name</b>, <b>email</b> and <b>address</b> will
+                be provided.
+                But sometimes this isn't enough and more information is needed. This is where a custom booking form
+                comes in.
+                Create a form for customers to fill out prior to booking to gather more info.
+            </p>
+            <p>Below is an example form for a customer booking a <span class="fw-bold">Pet & Animal</span> service.</p>
+            <div class="vstack gap-3">
+                <div class="hstack gap-3" *ngFor="let row of tempForm; let i = index">
+                    <a href="javascript:void(0)" (click)="removeRow(i)">
+                        <fa-icon class="text-danger" size="sm" [icon]="['fas','minus']"></fa-icon>
+                    </a>
+                    <div class="vr"></div>
+                    <div class="btn-group btn-group-sm" *ngFor="let col of row; let j = index">
+                        <button class="btn btn-light border" type="button" (click)="removeField(i, j)">
+                            <fa-icon class="text-danger" size="sm" [icon]="['fas','minus']"></fa-icon>
+                        </button>
+                        <button class="btn btn-light border" type="button"
+                            (click)="editField(i, j)">{{col.field}}</button>
+                    </div>
+                    <a href="javascript:void(0)" (click)="addField(i)" *ngIf="row.length < 3">
+                        <fa-icon class="text-primary" size="sm" [icon]="['fas','plus']"></fa-icon>
+                    </a>
+                </div>
+                <div class="hstack gap-3">
+                    <a href="javascript:void(0)" (click)="addRow()">
+                        <fa-icon class="text-primary" size="sm" [icon]="['fas','plus']"></fa-icon>
+                    </a>
+                    <div class="vr"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer position-relative">
+            <a href="javascript:void(0)" (click)="previewForm()" class="link-dark position-absolute preview">
+                <fa-icon size="xl" [icon]="['fas','eye']"></fa-icon>
+            </a>
+            <button type="button" class="btn btn-outline-danger me-4" (click)="deleteForm()">Delete</button>
+            <button type="button" class="btn btn-secondary" (click)="createForm()">
+                <ng-container *ngIf="create">Create</ng-container>
+                <ng-container *ngIf="!create">Update</ng-container>
+            </button>
+        </div>
+    </div>
+    <div *ngSwitchCase="'preview'">
+        <div class="modal-body">
+            <div class="row g-2 mb-3" *ngFor="let row of tempForm; let i = index">
+                <div class="col" *ngFor="let col of row; let j = index">
+                    <div [ngSwitch]="col.type">
+                        <div *ngSwitchCase="'text'">
+                            <div class="form-floating">
+                                <input type="text" id="{{col.field}}" class="form-control bg-light">
+                                <label for="{{col.field}}" class="form-label">{{col.field}}</label>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'textarea'">
+                            <div class="form-floating">
+                                <textarea class="form-control bg-light" id="{{col.field}}" rows="3"></textarea>
+                                <label for="{{col.field}}" class="form-label">{{col.field}}</label>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'checkbox'">
+                            <div class="form-check">
+                                <input class="form-check-input border-secondary" type="checkbox" id="{{col.field}}">
+                                <label class="form-check-label" for="{{col.field}}">{{col.field}}</label>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'select'">
+                            <div class="form-floating">
+                                <select class="form-select bg-light mb-3" aria-label="Default select example"
+                                    id="{{col.field}}">
+                                    <option selected disabled></option>
+                                    <option *ngFor="let option of col.options" value="option.value">{{option.value}}
+                                    </option>
+                                </select>
+                                <label class="form-label" for="{{col.field}}">{{col.field}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer position-relative">
+            <a href="javascript:void(0)" (click)="previewForm()" class="link-dark position-absolute preview">
+                <fa-icon size="xl" [icon]="['fas','pen-to-square']"></fa-icon>
+            </a>
+            <button type="button" class="btn btn-outline-danger me-4" (click)="deleteForm()">Delete</button>
+            <button type="button" class="btn btn-secondary" (click)="createForm()">
+                <ng-container *ngIf="create">Create</ng-container>
+                <ng-container *ngIf="!create">Update</ng-container>
+            </button>
+        </div>
+    </div>
+    <div *ngSwitchCase="'pick'">
+        <div class="modal-body">
+            <div class="form-floating">
+                <input type="text" [(ngModel)]="field.field" id="fieldName" class="form-control bg-light"
+                    (ngModelChange)="resetFieldErr()" maxlength="15">
+                <label for="fieldName" class="form-label">Field name</label>
+            </div>
+            <small class="text-danger" *ngIf="fieldErr">Please enter field name</small>
+            <div class="d-flex justify-content-around align-items-center my-5">
+                <button type="button" (click)="pickInputType('text')" class="btn"
+                    [ngClass]="{'btn-outline-secondary': field.type !== 'text', 'btn-success': field.type === 'text'}" aria-current="true">
+                    <fa-icon [icon]="['fas','i-cursor']"></fa-icon> Short text
+                </button>
+                <button type="button" (click)="pickInputType('select')" class="btn"
+                    [ngClass]="{'btn-outline-secondary': field.type !== 'select', 'btn-success': field.type === 'select'}" aria-current="true">
+                    <fa-icon [icon]="['far','square-caret-down']"></fa-icon> Drop down
+                </button>
+            </div>
+            <div class="d-flex justify-content-around align-items-center">
+                <button type="button" (click)="pickInputType('checkbox')" class="btn"
+                    [ngClass]="{'btn-outline-secondary': field.type !== 'checkbox', 'btn-success': field.type === 'checkbox'}" aria-current="true">
+                    <fa-icon [icon]="['far','square-check']"></fa-icon> Checkbox
+                </button>
+                <button type="button" (click)="pickInputType('textarea')" class="btn"
+                    [ngClass]="{'btn-outline-secondary': field.type !== 'textarea', 'btn-success': field.type === 'textarea'}" aria-current="true">
+                    <fa-icon [icon]="['fas','align-left']"></fa-icon> Paragraph
+                </button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="step='edit'">
+                Back
+            </button>
+        </div>
+    </div>
+    <div *ngSwitchCase="'select'">
+        <div class="modal-body">
+            <p>Add different options a customer can choose from.</p>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating">
+                        <select class="form-select bg-light" id="optionsSelect" aria-label="Default select example">
+                            <option value="option.value" *ngFor="let option of options">{{option.value}}</option>
+                        </select>
+                        <label for="optionsSelect" class="form-label">{{field.field}}</label>
+                    </div>
+                    <small class="text-danger" *ngIf="optionsErr">Please add options to select field</small>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" id="option" class="form-control bg-light" name="option"
+                            aria-describedby="option" placeholder="" maxlength="26" [(ngModel)]="option"
+                            (ngModelChange)="resetOptionErr()">
+                        <button class="btn btn-outline-secondary" type="button" (click)="addOption()">
+                            <fa-icon class="text-primary" [icon]="['fas','plus']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let option of options; let i = index">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" [value]="option.value" class="form-control bg-light" name="option" disabled>
+                        <button class="btn btn-outline-secondary" type="button" (click)="removeOption(i)">
+                            <fa-icon class="text-danger" [icon]="['fas','minus']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button me-3" class="btn btn-secondary" (click)="step='pick'">
+                Back
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="continue()">
+                Continue
+            </button>
+        </div>
+    </div>
+</div>

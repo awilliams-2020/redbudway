@@ -1,0 +1,107 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" (click)="track()"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" routerLink="/"><img src="assets/images/icon.png" width="36"></a>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav me-auto mb-3 mb-lg-0">
+          <li class="nav-item dropdown" *ngIf="isProviderLoggedIn">
+            <a class="nav-link dropdown-toggle" id="providerMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Provider
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="providerMenuLink">
+              <li *ngIf="adminId">
+                <a class="dropdown-item" routerLink="/admin/providers">Providers</a>
+              </li>
+              <li>
+                <a class="dropdown-item" [routerLink]="['/provider', providerId]">Business</a>
+              </li>
+              <li>
+                <a class="dropdown-item" [routerLink]="['/session/update-email']"
+                  [queryParams]="{providerId}">Email</a>
+              </li>
+              <li>
+                <a class="dropdown-item" [routerLink]="['/session/update-password']"
+                  [queryParams]="{providerId}">Password</a>
+              </li>
+              <li *ngIf="!isProviderLoggedIn">
+                <a class="dropdown-item" routerLink="/session/provider-login">Log In</a>
+              </li>
+              <li *ngIf="!isProviderLoggedIn">
+                <hr class="dropdown-divider">
+              </li>
+              <li *ngIf="!isProviderLoggedIn">
+                <a class="dropdown-item" routerLink="/session/provider-signup">Sign
+                  Up</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="logOut()" href="javascript:void(0)">Log Out</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" href="javascript:void(0)" (click)="deleteProviderAccount()">Delete
+                  Account</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown" *ngIf="isCustomerLoggedIn" s>
+            <a class="nav-link dropdown-toggle" id="customerMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Customer
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="customerMenuLink">
+              <li>
+                <a class="dropdown-item" [routerLink]="['/customer', customerId, 'quotes']">Quotes</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="customerBilling()" href="javascript:void(0)">Billing</a>
+              </li>
+              <li>
+                <a class="dropdown-item" [routerLink]="['/session/update-password']"
+                  [queryParams]="{customerId: customerId}">Password
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="customerLogOut()" href="javascript:void(0)">Log Out</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" (click)="deleteCustomerAccount()" href="javascript:void(0)">Delete
+                  Account</a>
+              </li>
+            </ul>
+          </li>
+          <li *ngIf="!isProviderLoggedIn && !isCustomerLoggedIn">
+            <a class="nav-link me-3 my-lg-0 my-3" routerLink="/session/customer-login">Log In</a>
+          </li>
+          <li class="d-flex align-items-center" *ngIf="!isProviderLoggedIn && !isCustomerLoggedIn">
+            <a class="btn btn-sm btn-secondary" routerLink="/session/customer-signup">Sign Up</a>
+          </li>
+        </ul>
+        <ul *ngIf="!isProviderLoggedIn && !isCustomerLoggedIn" class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="providerDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Providers
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="providerDropdown">
+              <li><a class="dropdown-item" routerLink="/session/provider-login">Log In</a></li>
+              <li><a class="dropdown-item" routerLink="/session/provider-signup">Sign Up</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" routerLink="/how-it-works">How It Works</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <app-toast></app-toast>

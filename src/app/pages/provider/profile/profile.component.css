@@ -1,0 +1,28 @@
+.word-break {
+    word-break: break-all;
+}
+
+.card-width {
+    max-width: 920px
+}
+
+.image-size {
+    width: 240px;
+    height: 240px;
+    object-fit: cover;
+}
+
+.spinner-size {
+    width:4rem;
+    height:4rem;
+    margin-top:80px
+}
+
+.star {
+    font-size: 24px !important;
+}
+
+.spinner {
+    width:5rem;
+    height:5rem
+}

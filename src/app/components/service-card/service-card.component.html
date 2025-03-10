@@ -1,0 +1,84 @@
+<div class="card shadow-sm m-auto h-100 min-height accent-border" [ngClass]="{'border border-danger border-2':service.archived}" [ngStyle]="{'border-top-color': service.business?.primary}">
+    <div class="row g-0 h-100">
+        <div class="col-5 bg-light">
+            <a [routerLink]="link" class="text-decoration-none">
+                <img [hidden]="loading" class="w-100 h-100 fit-object"
+                    src="{{service.image}}" (load)="onLoad()">
+                <div *ngIf="loading" class="pt-5 text-center min-height">
+                    <span class="spinner spinner-border text-dark" role="status"
+                        aria-hidden="true"></span>
+                </div>
+            </a>
+        </div>
+        <div class="col-7 border-start">
+            <a [routerLink]="link" class="text-decoration-none" >
+                <div class="card-body h-100 position-relative">
+                    <h6 class="mb-1 text-dark text-truncate font-monospace">{{service.title}}</h6>
+                    <div class="row g-0" *ngIf="service.priceId">
+                        <div class="col text-truncate">
+                            <small class="text-dark font-monospace">
+                                ${{service.price.toFixed(2)}}
+                                <ng-container *ngIf="service.subscription">
+                                    <span class="fw-bold fst-italic"> a {{service.interval}}</span>
+                                </ng-container>
+                            </small>
+                        </div>
+                    </div>
+                    <ng-template #star let-fill="fill">
+                        <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                        </span>
+                    </ng-template>
+                    <div class="row" *ngIf="service.priceId">
+                        <div class="col-auto">
+                            <div class="row">
+                                <div class="col text-muted">
+                                    <ngb-rating [starTemplate]="star" [(rate)]="service.rating" [max]="5" [readonly]="true">
+                                    </ngb-rating>
+                                    ({{service.reviews}})
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col text-muted">
+                                    <fa-icon [icon]="['fas','briefcase']"></fa-icon>
+                                    &nbsp;({{service.jobs}})
+                                </div>
+                                <div class="col-auto text-muted">
+                                    <span class="float-end">
+                                        <fa-icon [icon]="['fas','repeat']"></fa-icon>
+                                        &nbsp;({{service.repeat}})
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="position-absolute bottom-0" *ngIf="service.priceId">
+                        <small class="text-muted align-middle me-2">Time slots:</small>
+                        <span *ngIf="service.availableTimeSlots !== 0"
+                            class="badge rounded-pill bg-custom shadow-sm font-monospace">{{service.availableTimeSlots}}</span>
+                        <span *ngIf="service.availableTimeSlots === 0"
+                            class="badge rounded-pill bg-danger shadow-sm font-monospace">{{service.availableTimeSlots}}</span>
+                    </p>  
+                    <div class="row mb-3" *ngIf="!service.priceId">
+                        <div class="col text-muted">
+                            <ngb-rating [starTemplate]="star" [(rate)]="service.rating" [max]="5" [readonly]="true">
+                            </ngb-rating>
+                            ({{service.reviews}})
+                        </div>
+                    </div>
+                    <small *ngIf="!service.priceId" class="card-text text-muted">{{service.description}}</small>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row g-0" *ngIf="service.business">
+        <div class="col">
+            <div class="text-truncate card-footer bg-light">
+                <img *ngIf="service.business.icon" class="rounded-circle icon" src="{{service.business.icon}}">&nbsp;
+                <small>
+                    <a href="javascript:void(0)" (click)="viewProfile()" class="link-dark">{{service.business.name}}</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

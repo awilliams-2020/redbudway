@@ -1,0 +1,25 @@
+<div class="container px-4">
+    <div class="card border-0 m-auto">
+        <div class="card-body text-center" *ngIf="!checking">
+            <div class="row">
+                <div class="col">
+                    <h2>Please allow a few minutes after onboarding for your account to be verified.</h2>
+                    <p>If you haven't completed the onboarding process, please continue. Verification allows you to create services and recieve payments.</p>
+                    <button class="btn btn-primary" (click)="stripeOnboard()">
+                        Continue Onboarding
+                    </button>  
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col">
+                    <a href="javascript:void(0)" class="link-dark" (click)="getStatus()">
+                        Check status
+                    </a>  
+                </div>
+            </div>
+        </div>
+        <div class="card-body text-center" *ngIf="checking">
+            <span class="spinner-border spinner-border-sm diameter" role="status" aria-hidden="true"></span>
+        </div>
+    </div>
+</div>

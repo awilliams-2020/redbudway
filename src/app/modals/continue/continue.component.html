@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body bg-light">
+    <p [innerHTML]="message"></p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Continue</button>
+</div>

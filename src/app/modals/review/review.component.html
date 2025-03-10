@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body bg-light">
+Give this service a {{rating}} star rating?
+<textarea class="w-100 mt-3" rows="8" [(ngModel)]="reviewMes" (ngModelChange)="syncMessage()" placeholder="Comment"></textarea>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="addReview()">Review</button>
+</div>

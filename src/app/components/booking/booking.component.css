@@ -1,0 +1,15 @@
+:host {
+    .cal-week-view > .cal-time-events {
+        height: calc(100vh - 320px);
+        overflow: hidden auto !important;
+    }
+    .cal-day-columns {
+        height: 100%;
+    }
+    .back {
+        z-index: 1;
+    }
+}
+.back {
+    z-index: 1;
+}

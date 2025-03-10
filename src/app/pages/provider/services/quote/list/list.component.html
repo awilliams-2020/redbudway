@@ -1,0 +1,20 @@
+<div class="row" infiniteScroll [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollDisabled]="false"
+    [scrollWindow]="true">
+    <div class="col-lg-4 col-md-6 py-3">
+        <button [disabled]="loading" class="btn btn-light border shadow-sm w-100 h-100" (click)="createQuote()">
+            <fa-icon size="xl" [icon]="['fas','plus']"></fa-icon>&nbsp;
+            <span>Create quote</span>
+        </button>
+    </div>
+    <div class="col-lg-4 col-md-6 py-3" *ngFor="let quote of quotes">
+        <app-service-card [service]="quote" [link]="[quote.quoteId]"></app-service-card>
+    </div>
+</div>
+<div class="row m-4" *ngIf="loading">
+    <div class="col text-center">
+        <div role="status" class="spinner-border ">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<app-navbar></app-navbar>
+<div class="container-fluid">
+    <div class="d-flex overflow-auto pt-4 pb-3 invisible-scrollbar">
+        <a [routerLink]="[service.category]" #categories [ngClass]="{'active': service.category === selectedCategory, 'disabled': loading }"
+            routerLinkActive="bg-secondary text-light" class="btn shadow-sm border rounded-pill mx-3 align-self-center text-nowrap"
+            *ngFor="let service of categories" (click)="selectCategory(service)">
+            {{service.category}}
+        </a>
+    </div>
+    <div class="d-flex overflow-auto py-3 invisible-scrollbar" *ngIf="subCategories.length !==0">
+        <a [routerLink]="[selectedCategory, subCategory.subCategory]" routerLinkActive="bg-secondary text-light" type="button" class="btn shadow-sm border rounded-pill mx-3 align-self-center text-nowrap"
+            *ngFor="let subCategory of subCategories" (click)="selectSubCategory(subCategory)">
+            {{subCategory.subCategory}}
+        </a>
+    </div>
+    <a *ngIf="selectedCategory !== ''" class="ms-3 text-dark" (click)="openSideMenu()" href="javascript:void(0)"
+        aria-controls="offcanvasExample">
+        <small>Advanced</small>
+        <small class="ms-2" *ngIf="filters">+{{filters}}</small>
+    </a>
+    <div class="row" *ngIf="canSort">
+        <div class="col">
+            <hr>
+        </div>
+        <div class="col-auto">
+            <ng-template #sortBy>
+                sort by
+              </ng-template>
+            <a [ngClass]="{'disabled': loading}" class="btn shadow-sm border rounded-pill bg-light" href="javascript:void(0)" (click)="sortServices()">
+                <ng-container *ngIf="sorted.method !== ''; else sortBy">{{sorted.method}}&nbsp;</ng-container>
+                <fa-icon *ngIf="sorted.direction === 'desc'" [icon]="['fas','angle-down']"></fa-icon>
+                <fa-icon *ngIf="sorted.direction === 'asc'" [icon]="['fas','angle-up']" size="xl"></fa-icon>
+            </a>
+        </div>
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+    <hr *ngIf="!canSort">
+    <!-- <div class="row">
+        <div class="col text-center py-4" *ngIf="loading">
+            <div role="status" class="spinner spinner-border">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showRandom" class="row mb-5" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollDisabled]="loading" [scrollWindow]="true">
+        <div *ngFor="let fixedPrice of fixedPrices" class="col-lg-4 col-md-6 py-3">
+            <app-service-card [service]="fixedPrice" [link]="['/fixed-price', fixedPrice.priceId]"></app-service-card>
+        </div>
+        <div class="col text-center mt-5" *ngIf="!loading && !fixedPrices.length">
+            <h3 class="mb-5">We're sorry, but there are no services offered <ng-container *ngIf="state!==''">in <ng-container
+                        *ngIf="city!==''">{{city}},</ng-container> {{state | titlecase}}</ng-container> yet.</h3>
+            <p>Service provider?&nbsp;<a class="link-dark" routerLink="/session/provider-signup">sign up</a></p>
+        </div>
+    </div> -->
+    <router-outlet></router-outlet>
+</div>
+<!-- <nav class="navbar fixed-bottom navbar-light bg-light border-top">
+    <div class="container-fluid">
+        <div class="form-check form-switch">
+            <input [disabled]="loading" class="form-check-input border-secondary pointer" type="checkbox" id="quoteSwitch"
+                (change)="viewQuotes()">
+            <label class="form-check-label" for="quoteSwitch"><small>Fixed Prices</small></label>
+        </div>
+        <a href="javascript:void(0)" class="float-end link-dark" (click)="setLocation('update')">
+            <div class="row g-1">
+                <div class="col-auto">
+                    <fa-icon [icon]="['fas','location-crosshairs']" size="lg"></fa-icon>
+                </div>
+                <div class="col" *ngIf="city !== '' || state !== ''">
+                    <small><ng-container *ngIf="city !==''">{{city}}, </ng-container> {{state}}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+</nav> -->

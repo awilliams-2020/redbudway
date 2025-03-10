@@ -1,0 +1,74 @@
+<div class="container px-4">
+    <div class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center py-4 alice-font">Provider Sign Up</h4>
+            <hr>
+            <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="accountError">
+                Error creating acccount
+            </ngb-alert>
+            <form #sf #signUpForm="ngForm" novalidate>
+                <div class="form-floating my-4">
+                    <input [disabled]="isDisabled" #emailInput="ngModel" [(ngModel)]="email" type="email" id="email" class="form-control bg-light" name="email" aria-describedby="email"
+                        placeholder="" required appEmailValidation>
+                    <label for="email">Email</label>
+                    <div *ngIf="emailInput.invalid" class="invalid-feedback">
+                        <div *ngIf="emailInput.errors?.['required']">
+                            Provide email
+                        </div>
+                        <div *ngIf="emailInput.errors?.['email'] && email !== ''">
+                            Invalid email format
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group my-4 form-floating">
+                    <input [disabled]="isDisabled" #passw="ngModel" [(ngModel)]="password" [type]="type" id="password"
+                        class="form-control bg-light" name="password" aria-describedby="password" placeholder="" minlength="8"
+                        required>
+                    <label for="password">Password</label>
+                    <div *ngIf="passw.invalid" class="invalid-feedback">
+                        <div *ngIf="passw.errors?.['required']">
+                            Password required
+                        </div>
+                        <div *ngIf="passw.errors?.['minlength']">
+                            Minimum of 8 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-4 mb-2 form-floating">
+                    <input [disabled]="isDisabled" #verifyPassw="ngModel" [(ngModel)]="confirmPassword" [type]="type" id="confirmPassword" class="form-control bg-light" name="confirmPassword"
+                        aria-describedby="confirmPassword" placeholder="" required appPasswordValidation="{{passw.value}}">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div *ngIf="verifyPassw.invalid" class="invalid-feedback">
+                        <div *ngIf="verifyPassw.errors?.['required']">
+                            Verify password
+                        </div>
+                        <div *ngIf="verifyPassw.errors?.['password'] && verifyPassw.value !== ''">
+                            Passwords don't match
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input border-secondary" type="checkbox" value="" id="showPassword"
+                        (change)="showPassword()">
+                    <label class="form-check-label" for="showPassword">
+                        <small>show password</small>
+                    </label>
+                </div>
+                <div class="form-group mb-4">
+                    <button *ngIf="!isDisabled" (click)="signup(signUpForm)" class="btn btn-secondary w-100">Sign Up</button>
+                    <button *ngIf="isDisabled" class="btn btn-secondary w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <small><a class="link-dark" routerLink="/session/provider-login">Already a provider?</a></small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

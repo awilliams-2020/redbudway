@@ -1,0 +1,14 @@
+.no-data-width {
+    max-width: 558px;
+    width:100%;
+}
+.dashed-underline {
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-decoration-color: #4682b4;
+    text-decoration-thickness: 2.5px;
+}
+.spinner {
+    width:5rem;
+    height:5rem
+}

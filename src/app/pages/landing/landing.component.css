@@ -1,0 +1,30 @@
+.top-banner {
+    padding-top: 15px;
+    padding-bottom: 75px;
+}
+
+.max-svg-width {
+    max-width: 540px;
+    width: 100%;
+}
+
+.icon-width {
+    width:100px;
+}
+
+.padding-y {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.padding-top {
+    padding-top: 8rem;
+}
+
+.padding-bottom {
+    padding-bottom: 8rem;
+}
+
+.types-card {
+    min-height: 225px
+}

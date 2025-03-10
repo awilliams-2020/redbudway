@@ -1,0 +1,320 @@
+<app-toast></app-toast>
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<div class="card border-0 m-auto my-5 card-width" *ngIf="!loading">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="row g-0">
+                    <div class="col">
+                        <div *ngIf="imageLoading" class="m-auto bg-light border p-1 rounded-circle shadow-sm mb-3 image-size">
+                            <div class="spinner-border spinner-size" role="status">
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" (click)="openFileExplorer()">
+                            <img [hidden]="imageLoading" class="border p-1 rounded-circle shadow-sm mb-3 image-size"
+                                [src]="provider.image" (load)="onLoad()" alt="Card image cap">
+                        </a>
+                        <input hidden #input type="file" accept="image/png, image/jpeg"
+                            (change)="updateProfileImage($event)">
+                    </div>
+                </div>
+                <h1 class="font-monospace" *ngIf="provider.name===providerId" (click)="openNameForm()"><a class="link-dark" href="javascript:void(0)">Add business name</a></h1>
+                <h1 class="font-monospace" *ngIf="provider.name!==providerId" (click)="openNameForm()"><a class="link-dark" href="javascript:void(0)">{{provider.name}}</a></h1>
+                <div class="row">
+                    <div class="col-auto m-auto">
+                        <ng-template #star let-fill="fill">
+                            <span class="star" [class.full]="fill === 100">
+                                <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                            </span>
+                        </ng-template>
+                        <div class="row">
+                            <div class="col text-muted text-end">
+                                <ngb-rating [starTemplate]="star" [(rate)]="provider.rating"
+                                    [max]="5" [readonly]="true">
+                                </ngb-rating>
+                                ({{provider.reviews}})
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-end text-muted">
+                                <fa-icon [icon]="['fas','briefcase']"></fa-icon>
+                                &nbsp;Jobs ({{provider.jobs}})
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-end text-muted">
+                                <fa-icon [icon]="['fas','repeat']"></fa-icon>
+                                &nbsp;Repeat clients ({{provider.repeat}})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col">
+                        <div class="card rounded shadow-sm mb-3 bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                    <div class="col-auto">
+                                        <b>Overview</b>
+                                    </div>
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-center font-monospace">
+                                        <a class="link-dark" *ngIf="provider.description === ''" href="javascript:void(0)"
+                                            (click)="updateDescription()">Add a summary of who you are.</a>
+                                        <a class="link-dark" *ngIf="provider.description !== ''" href="javascript:void(0)"
+                                            (click)="updateDescription()">{{provider.description}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card rounded shadow-sm mb-3 bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                    <div class="col-auto">
+                                        <b>URL</b>
+                                    </div>
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <form class="py-1" #vf #vanityForm="ngForm" novalidate>
+                                    <label for="basic-url" class="form-label w-100 text-truncate text-muted font-monospace">
+                                        <small>
+                                            <a class="link-dark" href="https://redbudway.com/profile/{{vanityURL}}">
+                                            https://redbudway.com/profile/{{vanityURL}}
+                                            </a>
+                                        </small>
+                                    </label>
+                                    <div class="input-group">
+                                        <input #vanityURLInput *ngIf="provider.vanityURL === ''" type="text"
+                                            [(ngModel)]="vanityURL" name="vanityURL" placeholder="{{provider.providerId}}" maxlength="20"
+                                            class="form-control" id="vanityURL" aria-describedby="url-addon">
+                                        <input #vanityURLInput *ngIf="provider.vanityURL !== ''" type="text"
+                                            [(ngModel)]="vanityURL" name="vanityURL" placeholder="{{provider.vanityURL}}" maxlength="20"
+                                            class="form-control" id="vanityURL" aria-describedby="url-addon">
+                                        <button *ngIf="!isVanitySaving" class="btn btn-secondary" type="button" id="set"
+                                            (click)="updateVanityURL(vanityForm)">Set</button>
+                                        <button *ngIf="isVanitySaving" class="btn btn-secondary" type="button" disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Name taken
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card rounded shadow-sm mb-3 bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                    <div class="col-auto">
+                                        <b>Timezone</b>
+                                    </div>
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <label for="timeZone" class="form-label w-100 text-truncate font-monospace">
+                                    <small>
+                                        {{timeZone}}
+                                    </small>
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="timeZoneInput" type="text" class="form-control" placeholder="City, State, or Zipcode" aria-label="Users timezone" aria-describedby="set-timezone" id="timeZone">
+                                    <button [ngClass]="{'disabled': timeZoneInput ===''}" *ngIf="!isTimeZoneSaving" (click)="getTimeZone()" class="btn btn-secondary" type="button" id="timeZone">Set</button>
+                                    <button *ngIf="isTimeZoneSaving" class="btn btn-secondary" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm"></span>
+                                    </button>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col text-danger">
+                                        <small>{{errorMsg}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-lg-6">
+                <div class="card rounded shadow-sm mb-3 bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                            <div class="col-auto">
+                                <b>Sync</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 py-1">
+                                <a href="javascript:void(0)" (click)="googleService.login()">
+                                    <img *ngIf="!googleSync" w="24" height="24" src="assets/images/google-calendar.svg">
+                                    <img *ngIf="googleSync" w="26" height="26" class="rounded-circle"
+                                        src="{{userInfo.picture}}">
+                                </a>
+                            </div>
+                            <div class="col text-truncate py-1 font-monospace">
+                                <a class="link-dark" href="javascript:void(0)" (click)="googleService.login()">
+                                    <span *ngIf="!googleSync">Google Calendar</span>
+                                    <span *ngIf="googleSync">{{userInfo.email}}</span>
+                                </a>
+                            </div>
+                            <div class="col-auto py-1 ps-1" *ngIf="googleSync">
+                                <button (click)="googleService.logOut()" type="button" aria-label="Close"
+                                    class="btn-close align-middle"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card rounded shadow-sm bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                            <div class="col-auto">
+                                <b>Phone</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-truncate py-1 font-monospace">
+                                <a class="link-dark" *ngIf="!provider.number" href="javascript:void(0)" (click)="openNumberForm()">Add
+                                    support number</a>
+                                <a class="link-dark" *ngIf="provider.number" href="javascript:void(0)"
+                                    (click)="openNumberForm()">{{provider.number}}</a>
+                            </div>
+                            <div class="col-auto py-1" *ngIf="provider.number">
+                                <a *ngIf="numberSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(emailSwitch, !numberSwitch, addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye']"></fa-icon>
+                                </a>
+                                <a *ngIf="!numberSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(emailSwitch, !numberSwitch, addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye-slash']"></fa-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card rounded shadow-sm bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                            <div class="col-auto">
+                                <b>Email</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-truncate py-1 font-monospace">
+                                <a class="link-dark" *ngIf="!provider.email" href="javascript:void(0)" (click)="openEmailForm()">
+                                    Add support email
+                                </a>
+                                <a class="link-dark" *ngIf="provider.email" href="javascript:void(0)"
+                                    (click)="openEmailForm()">{{provider.email}}</a>
+                            </div>
+                            <div class="col-auto py-1" *ngIf="provider.email">
+                                <a *ngIf="emailSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(!emailSwitch, numberSwitch, addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye']"></fa-icon>
+                                </a>
+                                <a *ngIf="!emailSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(!emailSwitch, numberSwitch, addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye-slash']"></fa-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card rounded shadow-sm bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                            <div class="col-auto">
+                                <b>Address</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-truncate py-1 font-monospace">
+                                <a class="link-dark" href="javascript:void(0)" (click)="openAddressForm()"
+                                    *ngIf="!provider.address.lineOne">
+                                    Add support address
+                                </a>
+                                <a class="link-dark" href="javascript:void(0)" (click)="openAddressForm()"
+                                    *ngIf="provider.address.lineOne">
+                                    {{provider.address.lineOne}}
+                                    <br *ngIf="provider.address.lineTwo">
+                                    {{provider.address.lineTwo}}
+                                    <br>
+                                    {{provider.address.city}}, {{provider.address.state}}, {{provider.address.zipCode}}
+                                </a>
+                            </div>
+                            <div class="col-auto py-1" *ngIf="provider.address.lineOne">
+                                <a *ngIf="addressSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(emailSwitch, numberSwitch, !addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye']"></fa-icon>
+                                </a>
+                                <a *ngIf="!addressSwitch" href="javascript:void(0)"
+                                    (click)="updateProfileSettings(emailSwitch, numberSwitch, !addressSwitch)"
+                                    class="link-dark">
+                                    <fa-icon size="xl" [icon]="['fas','eye-slash']"></fa-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

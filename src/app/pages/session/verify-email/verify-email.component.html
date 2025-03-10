@@ -1,0 +1,15 @@
+<div class="container px-4">
+    <div class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+            <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="card-body my-5 text-center">
+            <fa-icon [icon]="['far','envelope']" size="6x"></fa-icon>
+            <h2 class="text-muted">Verification Error...</h2>
+            <h1 class="alice-font">Verify Email</h1>
+            <p>Your account is currently not active. Please verify your email to activate.</p>
+            <button type="button" class="btn btn-secondary mt-4" aria-label="Close" (click)="send()">Resend Verification</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="close()"></button>
+</div>
+<div class="modal-body bg-light rounded-bottom pb-5">
+    <div class="mx-3">
+        <p>You can search for services around your current location or a particular place.</p>
+        <a href="javascript:void(0)" class="link-dark" (click)="getCurrentLocation()" *ngIf="!gLoading">
+            <div class="row g-2">
+                <div class="col-auto">
+                    <fa-icon [icon]="['fas','location-crosshairs']"  size="lg"></fa-icon>
+                </div>
+                <div class="col">
+                    Use current location
+                </div>
+            </div>            
+        </a>
+        <div class="row g-2 text-dark" *ngIf="gLoading">
+            <div class="col-auto">
+                <span class="spinner-border spinner-border-sm"></span>
+            </div>
+            <div class="col">
+                Finding your location
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-danger">
+                <small>{{errorMsg}}</small>
+            </div>
+        </div>
+        <div class="input-group mt-4">
+            <input [(ngModel)]="input" type="text" class="form-control" placeholder="City, State, or Zipcode" aria-label="Users location" aria-describedby="set-location">
+            <button [ngClass]="{'disabled': input ===''}" *ngIf="!aLoading" (click)="getLocation()" class="btn btn-secondary" type="button" id="set-location">Set</button>
+            <button *ngIf="aLoading" class="btn btn-secondary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm"></span>
+            </button>
+        </div>
+        <div class="row mt-2">
+            <div class="col text-danger">
+                <small>{{addressMsg}}</small>
+            </div>
+        </div>
+    </div>
+</div>

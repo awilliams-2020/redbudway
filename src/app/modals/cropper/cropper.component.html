@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body p-0">
+    <small *ngIf="imageFailed" class="text-danger text-center">Failed to load image</small>
+    <div *ngIf="loading" class="pt-5 text-center min-height">
+        <span class="spinner spinner-border text-dark" role="status"
+            aria-hidden="true">Loading...</span>
+    </div>
+    <image-cropper
+        [imageChangedEvent]="image"
+        [imageBase64]="base64Image"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1"
+        format="png"
+        output="base64"
+        [resizeToWidth]="maxWidth"
+        [resizeToHeight]="maxHeight"
+        [onlyScaleDown]="scaleDown"
+        (imageLoaded)="imageLoaded()"
+        (imageCropped)="imageCropped($event)"
+        (loadImageFailed)="loadImageFailed()"
+    />
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cropImage()">Crop</button>
+</div>

@@ -1,0 +1,17 @@
+.empty-width {
+    max-width: 860px;
+    width:100%;
+}
+
+.ascending {
+    bottom: -10px;
+}
+
+.descending {
+    top: -5px;
+}
+
+.spinner {
+    width:5rem;
+    height:5rem
+}

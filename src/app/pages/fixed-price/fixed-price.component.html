@@ -1,0 +1,317 @@
+<app-navbar ></app-navbar>
+<app-toast></app-toast>
+<div class="container py-5" >
+    <div class="row">
+        <div class="col-lg-4">
+            <div id="imageCarousel" class="carousel slide carousel-fade mb-3 text-center" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <ng-container *ngFor="let image of service.images;index as i">
+                        <button type="button" data-bs-target="#imageCarousel" attr.data-bs-slide-to="{{i}}"
+                            class="bg-danger" [ngClass]="{'active': i ==0}" aria-current="true"
+                            aria-label="Slide i+1"></button>
+                    </ng-container>
+                </div>
+                <div class="carousel-inner">
+                    <div *ngFor="let image of service.images; index as j" class="carousel-item"
+                        [ngClass]="{'active': j==0}">
+                        <img src="{{image}}" class="rounded w-100 border image-size shadow">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <h1 class="font-monospace text-center">{{service.title}}</h1>
+            <h6 class="text-center">
+                <span class="font-monospace">
+                    ${{service.price.toFixed(2)}} per timeslot
+                    <ng-container *ngIf="service.subscription">
+                        <span class="fst-italic fw-bold">
+                            a {{service.interval}}
+                        </span>
+                    </ng-container>
+                </span>
+            </h6>
+            <ng-template #star let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                </span>
+            </ng-template>
+            <div class="hstack gap-2">
+                <ngb-rating class="ms-auto" [starTemplate]="star" [(rate)]="rating" [max]="5" [readonly]="readOnly"
+                    (rateChange)="reviewFixedPrice()"></ngb-rating>
+                <a *ngIf="service.reviews" href="javascript:void(0)" class="link-dark me-auto"
+                    (click)="viewReviews()">({{service.reviews}})</a>
+                <span class="align-self-center me-auto" *ngIf="!service.reviews">({{service.reviews}})</span>
+            </div>
+            <div class="hstack gap-3 text-muted">
+                <div class="hstack gap-2 ms-auto">
+                    <fa-icon [icon]="['fas','briefcase']"></fa-icon>
+                    <span>({{service.jobs}})</span>
+                </div>
+                <div class="hstack gap-2 me-auto">
+                    <fa-icon [icon]="['fas','repeat']"></fa-icon>
+                    <span>({{service.repeat}})</span>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.description">
+                <div class="col font-monospace">
+                    {{service.description}}
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.specialties.length">
+                <div class="col font-monospace">
+                    <span *ngFor="let specialty of service.specialties"
+                        class="badge rounded-pill shadow-sm me-2 bg-custom">{{specialty}}</span>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.statesAndCities.length">
+                <div class="col">
+                    <div class="d-flex flex-wrap flex-row py-2"
+                    *ngFor="let stateAndCities of service.statesAndCities">
+                    <span class="fw-bold me-3">{{stateAndCities.state}}</span>
+                    <span class="view-more overflow-hidden">
+                        <span #stateCities>
+                            <span class="font-monospace"
+                                *ngFor="let city of stateAndCities.cities; let i = index">
+                                {{city.name}}<span
+                                    *ngIf="i !== stateAndCities.cities.length-1">,</span>
+                            </span>
+                        </span>
+                    </span>
+                    <div class="d-flex justify-content-center w-100"
+                        *ngIf="stateCities.offsetHeight > 25">
+                        <a class="text-muted" href="javascript:void(0)"
+                            (click)="viewMore($event, stateCities)">
+                            <small>view more</small>
+                        </a>
+                    </div>
+                </div>  
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="service.includes.length || service.excludes.length">
+                <div class="col" *ngIf="service.includes.length">
+                    <div class="row p-2">
+                        <div class="col-auto">
+                            <fa-icon class="text-success" [icon]="['fas','circle-check']"
+                                size="xl"></fa-icon>
+                        </div>
+                        <div class="col fw-bold">
+                            Included
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li *ngFor="let included of service.includes"
+                            class="list-group-item list-group-item-success p-2 font-monospace">
+                            {{included}}</li>
+                    </ul>
+                </div>
+                <div class="col" *ngIf="service.excludes.length">
+                    <div class="row p-2">
+                        <div class="col-auto">
+                            <fa-icon class="text-danger" [icon]="['fas','circle-xmark']"
+                                size="xl"></fa-icon>
+                        </div>
+                        <div class="col-auto fw-bold">
+                            Excluded
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li *ngFor="let excluded of service.excludes"
+                            class="list-group-item list-group-item-danger p-2 font-monospace">
+                            {{excluded}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <app-booking #calendar [timeSlots]="service.timeSlots" [subscription]="service.subscription"
+                [interval]="service.interval" [timeZone]="timeZone" (selectedTimeSlot)="addTimeslot($event)">
+            </app-booking>
+            <hr class="mt-5" *ngIf="selectedTimeSlots.length">
+            <div class="row">
+                <div class="col">
+                    <div class="card border-0 mb-3 font-monospace" *ngIf="selectedTimeSlots.length && service.form.length">
+                        <div class="card-body p-0">
+                            <div class="row mb-3" *ngFor="let row of service.form; let i = index">
+                                <div class="col" *ngFor="let col of row; let j = index">
+                                    <div [ngSwitch]="col.type">
+                                        <div *ngSwitchCase="'text'">
+                                            <div class="form-floating">
+                                                <input type="text" id="{{col.field}}" class="form-control bg-light"
+                                                    [(ngModel)]="col.value" (ngModelChange)="resetErr(i,j)"
+                                                    maxlength="26">
+                                                <label for="{{col.field}}" class="form-label">{{col.field}}</label>
+                                            </div>
+                                            <small class="text-danger" *ngIf="col.error">{{col.field}} is
+                                                required</small>
+                                        </div>
+                                        <div *ngSwitchCase="'textarea'">
+                                            <div class="form-floating">
+                                                <textarea class="form-control bg-light" id="{{col.field}}" rows="3"
+                                                    [(ngModel)]="col.value" (ngModelChange)="resetErr(i,j)"
+                                                    maxlength="500"></textarea>
+                                                <label for="{{col.field}}" class="form-label">{{col.field}}</label>
+                                            </div>
+                                            <small class="text-danger" *ngIf="col.error">{{col.field}} is
+                                                required</small>
+                                        </div>
+                                        <div *ngSwitchCase="'checkbox'">
+                                            <div class="form-check">
+                                                <input class="form-check-input border-secondary"
+                                                    type="checkbox" id="{{col.field}}" [(ngModel)]="col.value">
+                                                <label class="form-check-label"
+                                                    for="{{col.field}}">{{col.field}}</label>
+                                            </div>
+                                            <small class="text-danger" *ngIf="col.error">{{col.field}} is
+                                                required</small>
+                                        </div>
+                                        <div *ngSwitchCase="'select'">
+                                            <div class="form-floating">
+                                                <select class="form-control bg-light"
+                                                    aria-label="Default select example" id="{{col.field}}"
+                                                    [(ngModel)]="col.value" (ngModelChange)="resetErr(i,j)">
+                                                    <option selected disabled></option>
+                                                    <option *ngFor="let option of col.options" value="{{option.value}}">
+                                                        {{option.value}}</option>
+                                                </select>
+                                                <label class="form-label" for="{{col.field}}">{{col.field}}</label>
+                                            </div>
+                                            <small class="text-danger" *ngIf="col.error">{{col.field}} is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>       
+                        </div>
+                    </div>
+                    <span *ngIf="selectedTimeSlots.length">
+                        <div class="row mb-3">
+                            <label for="timeslots" class="col-sm-3 col-md-2 col-form-label py-0 text-muted">
+                                Time slots
+                            </label>
+                            <div class="col-sm-9 col-md-8 font-monospace">
+                                <ng-container *ngFor="let selectedTimeSlot of selectedTimeSlots">
+                                    <div class="hstack gap-3">
+                                        <ng-container *ngIf="service.subscription">
+                                            <ng-container *ngIf="service.interval === 'week'">
+                                                <small>
+                                                    {{selectedTimeSlot.start | date:'EEEE'}}s
+                                                </small>
+                                                <div class="hstack gap-2">
+                                                    <small class="fw-bold">{{selectedTimeSlot.start | date:'h:mm'}}</small> -
+                                                    <small class="fw-bold">{{selectedTimeSlot.end | date:'h:mm'}}{{selectedTimeSlot.end | date : 'a' | lowercase}}&nbsp;{{getTimezoneShort(selectedTimeSlot.end)}}</small>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="service.interval === 'month'">
+                                                <small>
+                                                    {{selectedTimeSlot.start | date:'d' | day }}
+                                                </small>
+                                                <div class="hstack gap-2">
+                                                    <small>{{selectedTimeSlot.start | date:'h:mm'}}</small> -
+                                                    <small>{{selectedTimeSlot.end | date:'h:mm'}}{{selectedTimeSlot.end | date : 'a' | lowercase}}&nbsp;{{getTimezoneShort(selectedTimeSlot.end)}}</small>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="service.interval === 'year'">
+                                                <small>
+                                                    {{selectedTimeSlot.start | date:'LLLL'}}
+                                                    {{selectedTimeSlot.start | date:'d' | day}}
+                                                </small>
+                                                <div class="hstack gap-2">
+                                                    <small>{{selectedTimeSlot.start | date:'h:mm'}}</small> -
+                                                    <small>{{selectedTimeSlot.end | date:'h:mm'}}{{selectedTimeSlot.end | date : 'a' | lowercase}}&nbsp;{{getTimezoneShort(selectedTimeSlot.end)}}</small>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="!service.subscription">
+                                            <small>
+                                                {{selectedTimeSlot.start | date:'EEE, MMM d, yyyy'}}
+                                            </small>
+                                            <div class="hstack gap-2">
+                                                <small class="fw-bold">{{selectedTimeSlot.start | date:'h:mm'}}</small> -
+                                                <small class="fw-bold">{{selectedTimeSlot.end |
+                                                    date:'h:mm'}}{{selectedTimeSlot.end | date : 'a' |
+                                                    lowercase}}&nbsp;{{getTimezoneShort(selectedTimeSlot.end)}}</small>
+                                            </div>
+                                        </ng-container>
+                                        <button class="close btn-close float-end" (click)="removeTimeSlot(selectedTimeSlot)"></button>
+                                    </div>                                    
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="row mb-3" *ngIf="customerId !== ''">
+                            <label for="promoCode"
+                                class="col-sm-3 col-md-2 col-form-label py-0 text-muted">Promo</label>
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <input type="text" id="promo" class="form-control bg-light font-monospace" [(ngModel)]="promo" maxlength="36">
+                                    <button *ngIf="!verifying" class="btn btn-primary" type="button" id="apply" (click)="applyPromo()" [disabled]="promo===''">apply</button>
+                                    <button *ngIf="verifying" class="btn btn-primary" type="button" id="apply" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <small class="text-danger" *ngIf="promoInvalid">Promotion code invalid</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3" *ngIf="discount.valid">
+                            <label for="discount"
+                                class="col-sm-3 col-md-2 col-form-label py-0 text-muted">Discount</label>
+                            <div class="col-sm-9 col-md-8 font-monospace">
+                                <ng-container *ngIf="discount.type==='amount_off'; then amount else percent"></ng-container>
+                                <ng-container *ngIf="service.subscription; then subscription"></ng-container>
+                                <ng-template #amount>${{discount.amount}} Off</ng-template>
+                                <ng-template #percent>%{{discount.percent}} Off</ng-template>
+                                <ng-template #subscription>
+                                    <ng-container [ngSwitch]="discount.duration">
+                                        <ng-container *ngSwitchCase="'repeating'">
+                                            first <span *ngIf="discount.months>1">{{discount.months}}</span> month<span *ngIf="discount.months>1">s</span>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row mb-5 py-2">
+                            <label for="total" class="col-sm-3 col-md-2 col-form-label py-0 text-muted">Total</label>
+                            <div class="col-sm-9 col-md-8 font-monospace">
+                                <small>
+                                    ${{total | number:'1.2'}}
+                                    <ng-container *ngIf="service.subscription"><span class="fst-italic fw-bold">a {{service.interval}}</span></ng-container>                                          
+                                </small>
+                            </div>
+                        </div>
+                    </span>
+                    <div class="form-group mb-3 text-center" *ngIf="selectedTimeSlots.length">
+                        <button [disabled]="!selectedTimeSlots.length" *ngIf="!disable" class="btn btn-primary w-50"
+                            (click)="bookService()">Book</button>
+                        <button *ngIf="disable" class="btn btn-primary w-50" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col text-center">
+            <img *ngIf="business.icon" class="rounded-circle icon" src="{{business.icon}}">&nbsp;
+            <a class="link-dark font-monospace" href="javascript:void(0)" (click)="viewProfile()">
+                {{business.name}}
+            </a>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col text-center">
+            <a href="javascript:void(0)" class="link-dark" (click)="share()">
+                <fa-icon [icon]="['fas','share-alt']" size="xl"></fa-icon>
+            </a>
+        </div>
+    </div>
+</div>

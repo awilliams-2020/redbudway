@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body bg-light">
+    Time slot is tied to the following invoices. In order to remove this time slot you
+    will need to either delete or void the invoices. If time slot is tied to subscription invoice.
+    The subscription has to be canceled.
+    <ol class="list-group list-group-numbered mt-3">
+        <ng-container *ngFor="let customer of timeSlot.customers; let i = index">
+            <li class="list-group-item" *ngIf="customer.invoiceId">
+                <a (click)="viewInvoice(customer.invoiceId)"  href="javascript:void(0)">{{customer.invoiceId}}</a>
+            </li>
+            <li class="list-group-item" *ngIf="customer.subscriptionId">
+                <a (click)="viewSubscriptions(customer.cuStripeId)" href="javascript:void(0)">subscription</a>
+            </li>
+        </ng-container>
+    </ol>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Continue</button>
+</div>

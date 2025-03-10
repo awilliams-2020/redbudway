@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="stop()"></button>
+</div>
+<div class="modal-body p-0">
+    <video #video class="w-100">Video stream not available.</video>
+    <canvas hidden #canvas> </canvas>
+</div>
+<div class="modal-footer">
+    <button type="button" (click)="takePicture()" class="btn btn-secondary">Snapshot</button>
+</div>

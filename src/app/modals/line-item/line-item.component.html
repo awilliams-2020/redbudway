@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body bg-light">
+    <div class="form-floating mb-3">
+        <input type="text" [(ngModel)]="product.title" class="form-control" id="title" maxlength="30">
+        <label for="title">Title</label>
+        <small *ngIf="invalidTitle" class="text-danger">Provide title</small>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" [(ngModel)]="product.price" class="form-control" id="price">
+        <label for="price">Price</label>
+        <small *ngIf="invalidNum" class="text-danger">Price can't be $0.00</small>
+        <small *ngIf="invalidNumFormat" class="text-danger">Invalid price</small>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" [(ngModel)]="product.quantity" class="form-control" id="quantity">
+        <label for="quantity">Quantity</label>
+        <small *ngIf="invalidQuantity" class="text-danger">Quantity can't be 0</small>
+        <small *ngIf="invalidQuantityFormat" class="text-danger">Invalid quantity</small>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="add()">Add</button>
+</div>

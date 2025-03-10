@@ -1,0 +1,283 @@
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<div class="card m-auto my-5 card-width" *ngIf="!loading">
+    <div class="card-header">
+        <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center py-4 font-monospace">{{fixedPrice.title}}</h4>
+        <hr>
+        <form #pf #productForm="ngForm" novalidate>
+            <div class="row g-0" *ngIf="fixedPrice.images.length !== 0">
+                <div class="col text-center">
+                    <div id="imageCarousel" class="carousel slide m-auto carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <ng-container *ngFor="let image of fixedPrice.images;index as i">
+                                <button type="button" data-bs-target="#imageCarousel" attr.data-bs-slide-to="{{i}}"
+                                    class="bg-danger" [ngClass]="{'active': i ==0 }" aria-current="true"
+                                    aria-label="Slide i+1"></button>
+                            </ng-container>
+                        </div>
+                        <div class="carousel-inner">
+                            <div *ngFor="let image of fixedPrice.images; index as j" class="carousel-item"
+                                [ngClass]="{'active': j==0}">
+                                <div class="w-100 text-center position-absolute">
+                                    <button type="button" class="btn-close mt-3 bg-danger" (click)="removeImage(j)"
+                                        aria-label="Close"></button>
+                                </div>
+                                <img src="{{image}}" class="border p-1 shadow-sm rounded d-block w-100">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-4">
+                <input #input hidden type="file" id="images" accept="image/png, image/jpeg, image/webp"
+                    class="form-control" placeholder="" (change)="addImage($event)">
+                <button class="btn btn-secondary w-100" (click)="openFileExplorer()">
+                    Add images
+                </button>
+            </div>
+            <div class="alert border mb-4 mt-1"
+                [ngClass]="{'border-danger border-2':fixedPrice.archived}" role="alert">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-check-label" for="archived">Archived</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input border-secondary" [ngClass]="{'bg-light':!fixedPrice.archived}" type="checkbox" name="archived" id="archived"
+                                value="true" [(ngModel)]="fixedPrice.archived">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating mb-4">
+                <select class="form-select bg-light" id="categorySelect" [(ngModel)]="fixedPrice.category" name="category"
+                    (change)="selectSubCategories([])"
+                    aria-label="category select" required>
+                    <option value="" disabled selected>Select a category</option>
+                    <option *ngFor="let category of categories" value="{{category.category}}">{{category.category}}
+                    </option>
+                </select>
+                <label for="categorySelect">Category</label>
+                <div class="invalid-feedback">
+                    Provide category
+                </div>
+            </div>
+            <div class="form-floating mb-4" *ngIf="subCategories.length !== 0">
+                <select [disabled]="fixedPrice.category === ''" class="form-select bg-light" aria-label="subCategories select"
+                    [(ngModel)]="fixedPrice.subCategory" id="subCategory" name="subCategory"
+                    [attr.required]="subCategories.length !== 0" (change)="selectSpecialties([])">
+                    <option value="" disabled selected>Select a subcategory</option>
+                    <option *ngFor="let subCategory of subCategories" value="{{subCategory.subCategory}}">
+                        {{subCategory.subCategory}}
+                    </option>
+                </select>
+                <label for="subCategory">Subcategory</label>
+                <div class="invalid-feedback">
+                    Provide subcategory
+                </div>
+            </div>
+            <div class="form-floating mb-4" *ngIf="specialties.length !== 0">
+                <select class="form-select bg-light" id="specialtiesSelect" aria-label="Filters label" multiple
+                    [(ngModel)]="fixedPrice.specialties" style="height:120px" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let specialty of specialties" [ngValue]="specialty">{{specialty}}</option>
+                </select>
+                <label for="specialtiesSelect">Specialties</label>
+            </div>
+            <div class="alert border mb-4" role="alert">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-check-label" for="selectPlaces">Select Areas</label>
+                    </div>
+                    <div class="col-auto" *ngIf="fixedPrice.selectPlaces">
+                        <a class="link-dark" href="javascript:void(0)" (click)="openAreasModal()">edit</a>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check form-check-inline">
+                            <input #selectPlacesElement class="form-check-input border-secondary" type="checkbox" [ngClass]="{'bg-light':!fixedPrice.selectPlaces}"
+                                name="selectPlaces" id="selectPlaces" [(ngModel)]="fixedPrice.selectPlaces"
+                                [ngModelOptions]="{standalone: true}" (ngModelChange)="selectPlacesUpdate($event)">
+                        </div>
+                    </div>
+                    <small *ngIf="selectPlacesError" class="text-danger">Provide states and cites.</small>
+                </div>
+            </div>
+            <div class="alert border mb-4" role="alert">
+                <div class="row g-0">
+                    <div class="col-auto">
+                        <div class="form-check form-switch">
+                            <input [(ngModel)]="fixedPrice.timeZone" [ngModelOptions]="{standalone: true}" value="" class="form-check-input border-secondary" [ngClass]="{'bg-light':!fixedPrice.timeZone, 'bg-dark': fixedPrice.timeZone}" type="checkbox" id="timeZone">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-end">
+                            Time zone:&nbsp;
+                            <span class="fw-bold" *ngIf="fixedPrice.timeZone"><a href="javascript:void(0)" class="link-dark" (click)="updateTimeZone()">{{timeZone}}</a></span>
+                            <span class="fw-bold" *ngIf="!fixedPrice.timeZone">Service area</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group my-4 form-floating">
+                <input type="text" id="title" class="form-control bg-light" name="title" [(ngModel)]="fixedPrice.title"
+                    aria-describedby="title" placeholder="" maxlength="90" required>
+                <label for="title">Title</label>
+                <div class="invalid-feedback">
+                    Provide title
+                </div>
+            </div>
+            <div class="form-group mb-4 form-floating">
+                <textarea id="description" class="form-control bg-light" name="description" style="height:240px"
+                    [(ngModel)]="fixedPrice.description" aria-describedby="description" placeholder="" required
+                    maxlength="450"></textarea>
+                <label for="description">Description</label>
+                <div class="invalid-feedback">
+                    Provide description
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="form-group form-floating">
+                        <input type="text" id="includes" class="form-control bg-light" name="includes"
+                            [(ngModel)]="include" aria-describedby="includes" placeholder="" maxlength="26">
+                        <label for="title">Includes</label>
+                    </div>
+                </div>
+                <div class="col-auto pt-3">
+                    <a href="javascript:void(0)" class="link-dark" (click)="addInclude()">
+                        <fa-icon size="xl" [icon]="['fas','plus']"></fa-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let included of fixedPrice.includes; let i = index">
+                <div class="col-auto">
+                    <fa-icon class="text-success" [icon]="['fas','circle-check']" size="xl"></fa-icon>
+                </div>
+                <div class="col text-truncate">
+                    <p class="text-truncate mb-0">{{included}}</p>
+                </div>
+                <div class="col-auto">
+                    <a href="javascript:void(0)" (click)="removeInclude(i)">
+                        <fa-icon class="text-secondary" size="xl" [icon]="['fas','minus']"></fa-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col">
+                    <div class="form-group form-floating">
+                        <input type="text" id="exclude" class="form-control bg-light" name="exclude"
+                            [(ngModel)]="exclude" aria-describedby="exclude" placeholder="" maxlength="26">
+                        <label for="title">Excludes</label>
+                    </div>
+                </div>
+                <div class="col-auto pt-3">
+                    <a href="javascript:void(0)" class="link-dark" (click)="addExclude()">
+                        <fa-icon size="xl" [icon]="['fas','plus']"></fa-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let excluded of fixedPrice.excludes; let i = index">
+                <div class="col-auto">
+                    <fa-icon class="text-danger" [icon]="['fas','circle-xmark']" size="xl"></fa-icon>
+                </div>
+                <div class="col">
+                    <p class="text-truncate mb-0">{{excluded}}</p>
+                </div>
+                <div class="col-auto">
+                    <a href="javascript:void(0)" (click)="removeExclude(i)">
+                        <fa-icon class="text-secondary" size="xl" [icon]="['fas','minus']"></fa-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="form-group my-4 form-floating">
+                <input type="number" step="0.01" min="5.00" value="5.00" id="price"
+                    class="form-control bg-grey text-muted" name="price" [(ngModel)]="price"
+                    aria-describedby="price" placeholder="" disabled>
+                <label for="price">Price per time slot</label>
+            </div>
+            <div class="alert border mb-4" role="alert">
+                <div class="row">
+                    <div class="col text-muted">
+                        <label class="form-check-label" for="subscription">Subscription</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input border-secondary" [ngClass]="{'bg-light':!fixedPrice.subscription}" type="checkbox" name="subscription" id="subscription"
+                                value="true" [(ngModel)]="fixedPrice.subscription" [ngModelOptions]="{standalone: true}"
+                                disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="fixedPrice.subscription" class="row mb-4">
+                <div class="col">
+                    <div class="form-floating">
+                        <select class="form-select bg-light" id="subSelect" name="interval" [(ngModel)]="fixedPrice.interval"
+                            aria-label="interval select" disabled>
+                            <option value="week" selected>Weekly</option>
+                            <option value="month">Monthly</option>
+                            <option value="year">Yearly</option>
+                        </select>
+                        <label for="subSelect">Subscription Type</label>
+                        <div class="invalid-feedback">
+                            Provide cycle
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div role="group" class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary w-100" (click)="openCustomFormModal()">Form</button>
+                        <button type="button" class="btn btn-outline-secondary" (click)="openCustomFormModal()">
+                            <span class="badge bg-white">
+                                <fa-icon *ngIf="fixedPrice.form.length" class="text-success" [icon]="['fas','check']"></fa-icon>
+                                <fa-icon *ngIf="!fixedPrice.form.length" class="text-danger"[icon]="['fas','xmark']"></fa-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div role="group" class="btn-group w-100">
+                        <button [disabled]="dataLoading" class="btn btn-secondary w-100" (click)="openScheduleModal()">
+                            <span *ngIf="!dataLoading" >Schedule</span>
+                            <span *ngIf="dataLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                        <button [disabled]="dataLoading" class="btn btn-outline-secondary" (click)="openScheduleModal()">
+                            <span class="badge bg-white">
+                                <span [ngClass]="{'text-danger':!availableSlots, 'text-custom':availableSlots}">{{availableSlots}}</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group mb-4 mt-5">
+                <button class="btn btn-outline-danger w-100" (click)="close()">Cancel</button>
+            </div>
+            <div class="form-group my-4">
+                <button *ngIf="!updateSent" (click)="update(productForm)"
+                    class="btn btn-primary w-100">Update</button>
+                <button *ngIf="updateSent" class="btn btn-primary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+            <!-- <hr> -->
+            <!-- <app-share [url]="url"></app-share> -->
+        </form>
+    </div>
+</div>
+<app-toast></app-toast>

@@ -1,0 +1,241 @@
+<div *ngIf="loading" class="pt-5 text-center min-height">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<app-toast></app-toast>
+<div class="card border-0 m-auto my-5" *ngIf="!loading">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-2 mb-5" style="height: 400px">
+                <div class="row">
+                    <p class="font-monospace">Customers will see your branding when checking out or viewing an invoice.</p>
+                </div>
+                <div class="d-flex mb-3" *ngIf="!branding.logo">
+                    <div class="p-2 align-self-center">
+                        <button type="button" (click)="openFileExplorer('logo')" aria-label="Close"
+                            class="btn btn-secondary border shadow-sm logo-size">
+                            <fa-icon [icon]="['fas','plus']"></fa-icon>
+                        </button>
+                    </div>
+                    <div class="p-2 align-self-center"><small class="font-monospace">logo</small></div>
+                </div>
+                <div class="d-flex mb-3" *ngIf="branding.logo">
+                    <div class="p-2 align-self-center">
+                        <div *ngIf="logoLoading" class=" text-center border shadow-sm logo-size bg-light">
+                            <div class="spinner-border spinner-size" role="status"></div>
+                        </div>
+                        <a href="javascript:void(0)" (click)="openFileExplorer('logo')">
+                            <img [hidden]="logoLoading" class="border rounded shadow-sm logo-size bg-light"
+                                [src]="branding.logo" (load)="onLogoLoad()">
+                        </a>
+                    </div>
+                    <div class="p-2 align-self-center"><small class="font-monospace">logo</small></div>
+                </div>
+                <input hidden #logoInput type="file" accept="image/png, image/jpeg" (change)="updateLogoImage($event)">
+                <div class="d-flex mb-3" *ngIf="!branding.icon">
+                    <div class="p-2 align-self-center">
+                        <button type="button" (click)="openFileExplorer('icon')" aria-label="Close"
+                            class="btn btn-secondary border shadow-sm logo-size">
+                            <fa-icon [icon]="['fas','plus']"></fa-icon>
+                        </button>
+                    </div>
+                    <div class="p-2 align-self-center"><small class="font-monospace">icon</small></div>
+                </div>
+                <div class="d-flex mb-3" *ngIf="branding.icon">
+                    <div class="p-2 align-self-center">
+                        <div *ngIf="iconLoading" class="text-center border shadow-sm logo-size bg-light">
+                            <div class="spinner-border spinner-size" role="status">
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" (click)="openFileExplorer('icon')">
+                            <img [hidden]="iconLoading" class="border rounded shadow-sm logo-size bg-light"
+                                [src]="branding.icon" (load)="onIconLoad()">
+                        </a>
+                    </div>
+                    <div class="p-2 align-self-center">
+                        <small class="font-monospace">icon</small>
+                    </div>
+                </div>
+                <input hidden #iconInput type="file" accept="image/png, image/jpeg" (change)="updateIconImage($event)">
+                <div class="d-flex mb-3">
+                    <div class="p-2 align-self-center">
+                        <button *ngIf="!branding.primary" type="button" (click)="openColorPicker('primary')"
+                            aria-label="Close" class="btn btn-secondary border shadow-sm logo-size">
+                            <fa-icon [icon]="['fas','plus']"></fa-icon>
+                        </button>
+                        <a *ngIf="branding.primary" href="javascript:void(0)" (click)="openColorPicker('primary')">
+                            <span class="border rounded shadow-sm logo-size d-block"
+                                [ngStyle]="{'background-color': branding.primary}"></span>
+                        </a>
+                    </div>
+                    <div class="p-2 align-self-center">
+                        <small class="font-monospace">primary color</small>
+                    </div>
+                </div>
+                <input hidden #primaryInput type="color" (change)="updatePrimaryColor($event)">
+                <div class="d-flex mb-3">
+                    <div class="p-2 align-self-center">
+                        <button *ngIf="!branding.secondary" type="button" (click)="openColorPicker('secondary')"
+                            aria-label="Close" class="btn btn-secondary border shadow-sm logo-size">
+                            <fa-icon [icon]="['fas','plus']"></fa-icon>
+                        </button>
+                        <a *ngIf="branding.secondary" href="javascript:void(0)" (click)="openColorPicker('secondary')">
+                            <span class="border rounded shadow-sm logo-size d-block"
+                                [ngStyle]="{'background-color': branding.secondary}"></span>
+                        </a>
+                    </div>
+                    <div class="p-2 align-self-center">
+                        <small class="font-monospace">secondary color</small>
+                    </div>
+                </div>
+                <input hidden #secondaryInput type="color" (change)="updateSecondaryColor($event)">
+            </div>
+            <div class="col overflow-hidden" style="height: 400px">
+                <div class="row">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                        <li [ngbNavItem]="1">
+                            <button class="link-dark" ngbNavLink>Invoice</button>
+                            <ng-template ngbNavContent>
+                                <div class="card rounded shadow-sm m-auto my-5 h-100" style="max-width: 800px;"
+                                    [ngStyle]="{'border-top-color': branding.primary, 'border-top-width': '6px'}">
+                                    <div class="card-body py-5 ps-5">
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <h1>Invoice </h1>
+                                            </div>
+                                            <div class="col-4 col-lg-2">
+                                                <img *ngIf="branding.logo" [hidden]="iconLoading" class="logo-size"
+                                                    [src]="branding.logo">
+                                                <img *ngIf="!branding.logo" class="logo-size"
+                                                    src="https://redbudway.com/assets/images/icon.png">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <table class="table table-borderless table-sm" style="width: 240px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><small class="fw-bold">Invoice number</small></td>
+                                                            <td><small class="fw-bold">EXAMPLE-0001</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>Date of issue</small></td>
+                                                            <td><small>{{issued | date:'longDate'}}</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>Date due</small></td>
+                                                            <td><small>{{due | date:'longDate'}}</small></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <table class="table table-borderless table-sm" style="width: 240px;">
+                                                    <tbody *ngIf="provider">
+                                                        <tr>
+                                                            <td><small class="fw-bold">{{provider.name}}</small>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>{{provider.address.lineOne}}</small></td>
+                                                        </tr>
+                                                        <tr *ngIf="provider.address.lineTwo">
+                                                            <td><small>{{provider.address.lineTwo}}</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>{{provider.address.city}},
+                                                                    {{provider.address.state}},
+                                                                    {{provider.address.zipCode}}</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{{provider.number}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{{provider.email}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col">
+                                                <table class="table table-borderless table-sm" style="width: 240px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><small class="fw-bold">Bill to</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>John Doe</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>123 Some street</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><small>City, Ohio, 12345</small></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>+1 123-456-7890</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <button class="link-dark" ngbNavLink>Checkout</button>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card border-0 m-auto mt-5 h-100"
+                                            [ngClass]="{'bg-light': !branding.primary}"
+                                            [ngStyle]="{'background-color': branding.primary}"
+                                            style="max-width: 600px;">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <div class="p-2 align-self-center">
+                                                        <img *ngIf="!branding.icon" class="icon-size rounded-circle border shadow-sm me-2 bg-white"
+                                                            src="https://redbudway.com/assets/images/icon.png">
+                                                        <img *ngIf="branding.icon" [hidden]="iconLoading"
+                                                            class="icon-size rounded-circle border shadow-sm me-2 bg-white"
+                                                            [src]="branding.icon">
+                                                        <span class="fw-bold">{{provider.name}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card rounded shadow-sm m-auto h-100" style="max-width: 600px;">
+                                            <div class="card-body py-5 p-4">
+                                                <h1>$153.95</h1>
+                                                <span class="text-muted">Due {{due | date:'longDate'}}</span>
+                                                <div class="row">
+                                                    <div class="col text-center">
+                                                        <button class="btn text-light shadow-sm w-75 mt-5"
+                                                            [ngClass]="{'bg-custom':!branding.secondary}"
+                                                            [ngStyle]="{'background-color': branding.secondary}">Pay
+                                                            $153.95</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col" [ngClass]="{'bg-light': active===1 || (active === 2 && !branding.primary)}"
+                        [ngStyle]="{'background-color': active===2? branding.primary:null}">
+                        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

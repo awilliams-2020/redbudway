@@ -1,0 +1,24 @@
+<app-page-loader #pageLoader></app-page-loader>
+<div class="container px-4" *ngIf="!pageLoader.isLoading()">
+    <div class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+            <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="card-body my-5 text-center">
+            <ng-container *ngIf="!updated">
+                <fa-icon [icon]="['fas','skull-crossbones']" size="6x"></fa-icon>
+                <h2 class="text-muted mt-4">Verification Error...</h2>
+                <h1 class="card-title alice-font">Token Expired</h1>
+                <p>Token has expired and could not revert email. Please reach out to Redbud Way if you can no longer access your account.</p>
+                <a href="mailto:service@redbudway.com" class="mt-4" aria-label="Close">service&#64;redbudway.com</a>
+            </ng-container>
+            <ng-container *ngIf="updated">
+                <fa-icon class="text-success" [icon]="['far','envelope']" size="6x"></fa-icon>
+                <h2 class="text-muted">{{email}}</h2>
+                <h1 class="alice-font">Email Reverted</h1>
+                <p>Your account email has been reverted and can login in with this email.</p>
+            </ng-container>
+        </div>
+    </div>
+</div>

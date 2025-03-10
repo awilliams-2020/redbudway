@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body bg-light">
+    <textarea class="w-100" rows="8" placeholder="Message" [(ngModel)]="message">{{message}}</textarea>
+    <input #input hidden type="file" id="images" accept="image/png, image/jpeg" class="form-control bg-light"
+        placeholder="" (change)="addImage($event)">
+    <button class="btn btn-secondary w-100 my-3" (click)="openFileExplorer()">
+        Add images
+    </button>
+    <div class="row">
+        <div class="col p-2" *ngFor="let image of images; index as j">
+            <div class="position-absolute">
+                <button type="button" class="btn-close mt-3 ms-3" style="background-color: red;"
+                    (click)="removeImage(j)" aria-label="Close"></button>
+            </div>
+            <img style="object-fit: cover;" src="{{image}}" class="d-block rounded border p-1" width="120px"
+                height="120px" alt="...">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <small *ngIf="error" class="text-danger">{{errMsg}}</small>
+    <button *ngIf="!emailSent" type="button" class="btn btn-secondary" [disabled]="message == ''"
+        (click)="send()">Send</button>
+    <button *ngIf="emailSent" class="btn btn-secondary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </button>
+</div>

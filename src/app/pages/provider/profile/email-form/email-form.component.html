@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="error">
+        Error updating email
+    </ngb-alert>
+    <form #ef #emailForm="ngForm" novalidate>
+        <div class="form-group mb-4 form-floating">
+            <input [disabled]="isDisabled" type="text" [(ngModel)]="email" id="email" class="form-control bg-light" name="email" aria-describedby="email"
+                placeholder="" maxlength="90" required>
+            <label for="email">Support email</label>
+            <div class="invalid-feedback">
+                Provide support email
+            </div>
+        </div>
+        <small class="float-start"><a href="javascript:void(0)" (click)="updateAccountEmail()">Update account email?</a></small>
+        <div class="form-group mb-4 float-end">
+            <button *ngIf="!isDisabled" (click)="update(emailForm)" class="btn btn-secondary">Update</button>
+            <button *ngIf="isDisabled" class="btn btn-secondary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </form>
+</div>

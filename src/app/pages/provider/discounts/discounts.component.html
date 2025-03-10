@@ -1,0 +1,87 @@
+<div class="row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+(scrolled)="onScroll()" [infiniteScrollDisabled]="false" [scrollWindow]="true">
+    <div class="col-lg-4 col-md-6 py-3">
+        <button [disabled]="loading" class="btn btn-light border shadow-sm w-100 h-100" (click)="createCoupon()">
+            <fa-icon size="xl" [icon]="['fas','plus']"></fa-icon>&nbsp;
+            <span>Create coupon</span>
+        </button>
+    </div>
+    <div class="col-lg-4 col-md-6 py-3" *ngFor="let discount of discounts; let i = index">
+        <div class="card shadow-sm m-auto coupon font-monospace">
+            <div class="row g-0">
+                <div class="col">
+                    <div class="card-body pb-0 border-bottom">
+                        <div class="d-flex flex-row">
+                            <p (click)="editCouponName(discount)" class="lead text-dark text-truncate mb-0 pointer w-100 text-decoration-underline">{{discount.name}}</p>
+                            <fa-icon (click)="deleteCoupon(i)" class="ms-3 text-danger flex-shrink-1 pointer" [icon]="['fas','trash-can']"></fa-icon>
+                        </div>
+                        <div class="d-flex flex-row text-muted mb-3">
+                            <small *ngIf="discount.type==='percent_off'">{{discount.percent}}% Off&nbsp;</small>
+                            <small *ngIf="discount.type==='amount_off'">${{discount.amount}} Off&nbsp;</small>
+                            <small *ngIf="discount.duration === 'repeating'">first <ng-container *ngIf="discount.months===1">month</ng-container><ng-container *ngIf="discount.months>1">{{discount.months}} months</ng-container></small>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <small>Services</small>
+                            </div>
+                            <div class="col">
+                                <small [ngClass]="{'text-danger fw-bold':discount.redeemed}">{{discount.redeemed? 'Redeemed':'Redemptions'}}</small>                                
+                            </div>
+                            <div class="col-5" *ngIf="discount.redeemBy !== '0'">
+                                <small [ngClass]="{'text-danger fw-bold':discount.expired}">{{discount.expired? 'Expired':'Expires'}}</small>
+                            </div>
+                        </div>
+                        <div class="row border-top">
+                            <div class="col border-end pb-3">
+                                <span *ngIf="discount.expired || discount.redeemed">{{discount.services.length}}</span>
+                                <a *ngIf="!discount.expired && !discount.redeemed" href="javascript:void(0)" (click)="editCouponServices(discount)" class="link-dark">{{discount.services.length}}</a>
+                            </div>
+                            <div class="col pb-3" [ngClass]="{'border-end': discount.redeemBy !== '0'}">
+                                <span [ngClass]="{'text-danger': discount.redeemed}">{{discount.timesRedeemed}}<ng-container *ngIf="discount.maxRedemptions">/{{discount.maxRedemptions}}</ng-container></span>
+                            </div>
+                            <div class="col-5 pb-3" *ngIf="discount.redeemBy !== '0'">
+                                <span [ngClass]="{'text-danger': discount.expired}">{{discount.redeemBy | date:'M/d/yy h:mm a'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex" *ngIf="!discount.promos.length && !discount.expired">
+                        <div class="input-group input-group-sm p-1 ms-2">
+                            <input type="text" class="form-control bg-light fw-bold" ngModel #code="ngModel" placeholder="25PERCENTOFF" maxlength="36" pattern="[a-zA-Z0-9]+" aria-label="Promotion code" aria-describedby="promoCode" required>
+                            <button class="btn btn-secondary rounded-end" type="button" id="promoCode" (click)="createPromoCode($event, discount, code)">Create</button>
+                            <button style="width:58px" class="btn btn-secondary rounded-end" type="button" disabled hidden>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <button class="btn btn-sm btn-secondary p-1 m-1 me-3" type="button" id="promoCode" (click)="generatePromoCode($event, discount)">Generate</button>
+                        <button style="width:66px" class="btn btn-sm btn-secondary p-1 m-1 me-3" type="button" disabled hidden>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <ul class="list-group list-group-flush" *ngIf="discount.promos.length">
+                        <ng-container *ngFor="let promo of discount.promos">
+                            <li class="list-group-item pb-2 list-group-item-light">
+                                <div class="d-flex">
+                                    <div class="form-check form-switch text-truncate">
+                                        <input class="form-check-input border-dark" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                            [disabled]="discount.expired || discount.redeemed"
+                                            [checked]="(discount.expired || discount.redeemed)? false: promo.active"
+                                            (click)="updatePromo($event, promo)"
+                                            [ngClass]="{'bg-success': (!discount.expired && !discount.redeemed && promo.active)}">
+                                        <span [ngClass]="{'text-muted user-select-none':(discount.expired || discount.redeemed || !promo.active), 'text-success user-select-all':(!discount.expired && !discount.redeemed && promo.active)}" class="fw-bold">{{promo.code}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ng-container>
+                      </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row m-4" *ngIf="loading">
+    <div class="col text-center">
+        <div role="status" class="spinner-border ">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="form-floating mb-4">
+        <textarea class="form-control w-100 bg-light box-height" [(ngModel)]="description" maxlength="450" id="textArea">{{description}}</textarea>
+        <label for="textArea">Comments</label>
+    </div>
+    <div class="form-group mb-4 float-end">
+        <button type="button" class="btn btn-secondary" (click)="update()">Update</button>
+    </div>
+</div>

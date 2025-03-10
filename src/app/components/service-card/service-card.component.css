@@ -1,0 +1,21 @@
+.fit-object {
+    object-fit: cover;
+}
+.placeholder-icon {
+    margin-top: 25%;
+    margin-left: 25%;
+}
+
+.min-height {
+    min-height:225px
+}
+
+.spinner {
+    width:5rem;
+    height:5rem
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+}

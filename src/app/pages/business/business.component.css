@@ -1,0 +1,38 @@
+.custom-border {
+    border-color: #4682b4;
+    border-style: dashed;
+    border-width: 2px;
+}
+
+.align-right {
+    margin-right:25%
+}
+
+.card-width {
+    max-width: 1224px;;
+}
+
+.custom-font-size {
+    font-size: calc(1.5rem + 1.5vw)
+}
+
+.image-size {
+    width: 240px;
+    height: 240px;
+    object-fit: cover;
+}
+
+.spinner-size {
+    width:4rem;
+    height:4rem;
+    margin-top:80px
+}
+
+.star {
+    font-size: 24px !important;
+}
+
+.services-height {
+    max-height: 800px;
+    overflow: hidden auto !important;
+}

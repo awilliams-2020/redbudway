@@ -1,0 +1,109 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss(false)"></button>
+</div>
+<div class="modal-body font-monospace">
+    <!--APPOINTMENT INFO-->
+    <div class="row mt-4">
+        <div class="col text-center">
+            {{title}} - ${{price.toFixed(2)}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            {{startTime | date:'EEEE, MMM d'}}
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col text-center fw-bold">
+            {{startTime | date:'h:mm'}} - {{endTime | date:'shortTime'}}
+        </div>
+    </div>
+    <!---->
+
+    <!--CANCEL-->
+    <ng-template #cancelApt>
+        <div class="col text-center" *ngIf="!loading">
+            <div class="row">
+                <div class="col">
+                    <p class="font-monospace mb-3">
+                        Cancel {{customer}} 
+                        <ng-container *ngIf="!subscription">appointment.</ng-container>
+                        <ng-container *ngIf="subscription">{{interval}}ly subscription.</ng-container>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 ms-auto text-center">
+                    <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+                </div>
+                <div class="col-4 me-auto text-center">
+                    <button type="button" class="btn btn-primary" (click)="continue()">Continue</button>
+                </div>
+            </div>
+        </div>
+        <div class="col text-center pt-4" *ngIf="loading">
+            <div role="status" class="spinner-border ">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </ng-template>
+    <!---->
+
+    <ng-template #appointment let-customer let-i="idx">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    {{customer.info.name}}
+                    <button *ngIf="!subscription && customer.status==='draft' || customer.status==='open'" type="button"
+                        class="close btn-close text-danger float-end" aria-label="Cancel" (click)="alert(i)"></button>
+                    <button *ngIf="subscription && customer.status==='active'" type="button"
+                        class="close btn-close text-danger float-end" aria-label="Cancel" (click)="alert(i)"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <a class="link-dark" href="mailto:{{customer.info.email}}">{{customer.info.email}}</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            quantity: <b>{{customer.quantity}}</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a *ngIf="!subscription" type="button" [ngClass]="{
+                                    'text-warning': customer.status === 'draft',
+                                    'text-primary': customer.status === 'open',
+                                    'text-success': customer.status === 'paid',
+                                    'text-danger': customer.status === 'uncollectible'
+                                }"
+                                href="javascript:void(0)" (click)="viewInvoice(customer.invoiceId)">invoice</a>
+                            <a *ngIf="subscription" type="button"  [ngClass]="{
+                                    'text-success': customer.status === 'active',
+                                    'text-danger': customer.status === 'incomplete'
+                                }"
+                                href="javascript:void(0)" (click)="viewSubscriptions(customer.stripeId)">subscription</a>
+                            <!-- <button type="button" class="btn btn-primary float-end">Reschedule</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <!--CUSTOMERS-->
+    <ng-container *ngFor="let customer of customers; let i = index">
+        <hr>
+        <div class="row bg-light border shadow p-3 rounded mx-1">
+            <ng-container
+                [ngTemplateOutlet]="showAlert && index===i? cancelApt : appointment" 
+                [ngTemplateOutletContext]="{$implicit: customer, idx:i}"></ng-container>
+        </div>
+    </ng-container>
+    <!---->
+</div>

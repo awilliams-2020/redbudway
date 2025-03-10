@@ -1,1 +1,142 @@
-/* You can add global styles to this file, and also import other style files */
+.alice-font {
+  font-family: 'Alice', serif;
+}
+
+.cal-event-highlight:hover {
+  background-color: #e1e1e1 !important
+}
+
+.cal-event-title {
+  color: white;
+}
+
+.cal-week-view > .cal-time-events {
+  max-height: 540px;
+  overflow-y: auto;
+}
+.cal-day-columns {
+  height: 100%;
+}
+
+.custom-close {
+  position: absolute;
+  top: 6px;
+  width: 22px;
+  height: 22px;
+  left: 0px;
+}
+
+/* .custom-close:hover {
+  opacity: 1;
+  cursor:pointer
+} */
+
+.custom-close:before, .custom-close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 22px;
+  width: 2px;
+  background-color: #333;
+}
+
+.custom-close:before {
+  transform: rotate(45deg);
+}
+
+.custom-close:after {
+  transform: rotate(-45deg);
+}
+
+.cal-disabled {
+  background-color: #eee;
+  pointer-events: none;
+}
+
+.cal-disabled .cal-day-number {
+  opacity: 0.1;
+}
+
+.text-custom {
+  color: #4682b4;
+}
+
+.bg-custom {
+  background-color:#4682b4 !important;
+}
+
+.pointer {
+  cursor:pointer;
+}
+
+.star {
+  position: relative;
+  color: #d3d3d3;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.full {
+  color: #ffc107;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #ffc107;
+}
+
+.overflow {
+  max-height:104px;
+  overflow-y:auto;
+}
+
+.card-width {
+  max-width: 500px;
+}
+
+.mini-card {
+  min-height: 180px;
+}
+
+.custom-event {
+  margin-bottom: 15px;
+}
+
+.invisible-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.accent-border {
+  border-top-color: #4682b4 !important;
+  border-top-width: 3px !important;
+}
+
+.ad-square-container {
+  max-width: 280px;
+  max-height: 280px;
+  border-color: black;
+  border-width: 3px;
+  border-style: dashed;
+  margin: 24px auto;
+  padding: 5px;
+  & legend {
+    all: revert;
+  }
+}
+
+.ad-container {
+  border-color: black;
+  border-width: 3px;
+  border-style: dashed;
+  padding: 5px;
+  & legend {
+    all: revert;
+  }
+}

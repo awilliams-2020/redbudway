@@ -1,0 +1,112 @@
+<ng-template #mediumStar let-fill="fill">
+    <span class="medium-star" [class.full]="fill === 100">
+        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+    </span>
+</ng-template>
+<ng-template #star let-fill="fill">
+    <span class="star" [class.full]="fill === 100">
+        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+    </span>
+</ng-template>
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="card m-auto border-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-auto mx-auto">
+                    <div class="row">
+                        <div class="d-flex">
+                            <span class="text-muted align-self-center me-2">{{reviews.fiveStars}}</span>
+                            <ngb-rating [starTemplate]="star" [(rate)]="fiveStar" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex">
+                            <span class="text-muted align-self-center me-2">{{reviews.fourStars}}</span>
+                            <ngb-rating [starTemplate]="star" [(rate)]="fourStar" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex">
+                            <span class="text-muted align-self-center me-2">{{reviews.threeStars}}</span>
+                            <ngb-rating [starTemplate]="star" [(rate)]="threeStar" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex">
+                            <span class="text-muted align-self-center me-2">{{reviews.twoStars}}</span>
+                            <ngb-rating [starTemplate]="star" [(rate)]="twoStar" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex">
+                            <span class="text-muted align-self-center me-2">{{reviews.oneStars}}</span>
+                            <ngb-rating [starTemplate]="star" [(rate)]="oneStar" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto d-flex p-0">
+                    <div class="vr"></div>
+                </div>
+                <div class="col-auto mx-auto">
+                    <div class="row">
+                        <div class="col">
+                            <ngb-rating [starTemplate]="mediumStar" [(rate)]="rating" [max]="5" [readonly]="true"></ngb-rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="fw-bold alice-font fs-2">
+                                <ng-container *ngIf="rating === 1">
+                                    {{rating}} star
+                                </ng-container>
+                                <ng-container *ngIf="rating !== 1">
+                                    {{rating}} stars
+                                </ng-container>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body" style="max-height:640px; overflow:auto">
+    <ng-container *ngFor="let review of reviews.reviews">
+        <div class="card w-100 mb-3">
+            <div class="card-header">
+                <div class="d-flex">
+                    <ngb-rating class="flex-grow-1" [starTemplate]="star" [(rate)]="review.rating" [max]="5" [readonly]="true"></ngb-rating>
+                    <small class="float-end align-self-center">{{review.date | date:'mediumDate'}}</small>
+                </div>
+            </div>
+            <div class="card-body" *ngIf="review.message !== ''">
+                <figure>
+                    <p>{{review.message}}</p>
+                    <figcaption class="blockquote-footer">{{review.customer}}</figcaption>
+                </figure>
+            </div>
+        </div>
+        <div *ngIf="review.responded" class="card w-75 mb-3 ms-auto">
+            <div class="card-header">
+                {{review.provider}}
+                <small class="float-end">{{review.respDate | date:'mediumDate'}}</small>
+            </div>
+            <div class="card-body">
+                {{review.respMsg}}
+            </div>
+        </div>
+    </ng-container>
+    <div class="row">
+        <div class="col-auto m-auto">
+            <ngb-pagination *ngIf="reviews.reviews.length > 10" [collectionSize]="reviews.reviews.length" [pageSize]="10" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Close</button>
+</div>

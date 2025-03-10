@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="d-flex overflow-auto pt-4 pb-3 invisible-scrollbar">
+        <a #onboard routerLink="onboard" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" *ngIf="!submitted || !enabled">
+            Onboard
+        </a>
+        <a #profile routerLink="./" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [routerLinkActiveOptions]= "{exact: true}" [ngClass]="{'disabled': !submitted || !enabled}">
+            Profile
+        </a>
+        <a #schedule routerLink="schedule" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Schedule
+        </a>
+        <a #services routerLink="services" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Services
+        </a>
+        <a #discounts routerLink="discounts" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Discounts
+        </a>
+        <a #reviews routerLink="reviews" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Reviews
+        </a>
+        <a href="javascript:void(0)" (click)="stripeLogin()" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Dashboard
+        </a>
+        <a #billing routerLink="billing" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Billing
+        </a>
+        <a #branding routerLink="branding" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Branding
+        </a>
+        <!-- <a #domain routerLink="domain" routerLinkActive="bg-secondary text-light active" class="btn btn-light shadow-sm border rounded-pill mx-3 align-self-center text-nowrap" [ngClass]="{'disabled': !submitted || !enabled}">
+            Domain
+        </a> -->
+    </div>
+    <hr>
+    <router-outlet (activate)="onStatusUpdate($event)" ></router-outlet>
+</div>

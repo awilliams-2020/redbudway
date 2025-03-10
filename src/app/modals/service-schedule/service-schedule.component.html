@@ -1,0 +1,92 @@
+<ng-template #customMonthViewHeader>
+    <div role="row" class="cal-cell-row cal-header">
+        <div tabindex="0" role="columnheader" class="cal-cell cal-past cal-weekend"> Sun </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-past"> Mon </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-past"> Tue </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-past"> Wed </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-past"> Thu </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-today"> Fri </div>
+        <div tabindex="0" role="columnheader" class="cal-cell cal-future cal-weekend"> Sat </div>
+    </div>
+</ng-template>
+
+<ng-template #customWeekViewHeader let-days="days" let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate">
+    <div role="row" class="cal-day-headers">
+        <div *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate" [class.cal-past]="day.isPast"
+            [class.cal-today]="day.isToday" [class.cal-future]="day.isFuture" [class.cal-weekend]="day.isWeekend"
+            tabindex="0" role="columnheader" class="cal-header cal-past cal-weekend">
+            <b>{{ day.date | date:'cccccc' }}</b>
+        </div>
+    </div>
+</ng-template>
+<span id="scheduling">
+    <div class="modal-header">
+        <span *ngIf="interval === ''">{{viewDate | date:'mediumDate'}}</span>
+        <span *ngIf="interval === 'week'">Weekly subscription</span>
+        <span *ngIf="interval === 'month'">Monthly subscription</span>
+        <span *ngIf="interval === 'year'">Yearly subscription</span>
+        <button type="button" class="close btn-close" aria-label="Close" (click)="close()"></button>
+    </div>
+</span>
+<div class="modal-body p-0">
+    <div [ngSwitch]="view">
+        <div *ngSwitchCase="CalendarView.Day">
+            <mwl-calendar-day-view [viewDate]="viewDate" [events]="calendarEvents" [refresh]="refresh"
+                (hourSegmentClicked)="segmentClicked($event.date)">
+            </mwl-calendar-day-view>
+        </div>
+        <div *ngSwitchCase="CalendarView.Week">
+            <mwl-calendar-week-view [viewDate]="viewDate" [events]="calendarEvents" [refresh]="refresh"
+                (hourSegmentClicked)="segmentClicked($event.date)" [headerTemplate]="customWeekViewHeader">
+            </mwl-calendar-week-view>
+        </div>
+        <div *ngSwitchCase="CalendarView.Month">
+            <div class="row g-1 p-1" *ngIf="interval === ''">
+                <div class="col">
+                    <button type="button" class="btn btn-secondary w-100" mwlCalendarToday
+                        [(viewDate)]="viewDate">Today</button>
+                </div>
+                <div class="col" *ngIf="viewDate.getMonth()+1 !== todaysDate.getMonth()">
+                    <button type="button" class="btn btn-secondary w-100" mwlCalendarNextView [view]="view"
+                        [(viewDate)]="viewDate">
+                        <fa-icon [icon]="['fas','caret-right']"></fa-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row g-1 p-1" *ngIf="interval === 'year'">
+                <div class="col" *ngIf="viewDate.getMonth() !== 0">
+                    <button type="button" class="btn btn-secondary w-100" mwlCalendarPreviousView [view]="view"
+                        [(viewDate)]="viewDate">
+                        <fa-icon [icon]="['fas','caret-left']"></fa-icon>
+                    </button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-secondary w-100" mwlCalendarToday
+                        [(viewDate)]="viewDate">{{viewDate | date:'MMMM'}}</button>
+                </div>
+                <div class="col" *ngIf="viewDate.getMonth() !== 11">
+                    <button type="button" class="btn btn-secondary w-100" mwlCalendarNextView [view]="view"
+                        [(viewDate)]="viewDate">
+                        <fa-icon [icon]="['fas','caret-right']"></fa-icon>
+                    </button>
+                </div>
+            </div>
+            <hr class="m-0">
+            <mwl-calendar-month-view *ngIf="interval === 'month'" [viewDate]="viewDate" [events]="calendarEvents"
+                [refresh]="refresh" (dayClicked)="dayClicked($event.day)" [headerTemplate]="customMonthViewHeader"
+                (beforeViewRender)="beforeMonthViewRender($event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-month-view *ngIf="interval === 'year'" [viewDate]="viewDate" [events]="calendarEvents"
+                [refresh]="refresh" (dayClicked)="dayClicked($event.day)" [headerTemplate]="customMonthViewHeader"
+                (beforeViewRender)="beforeYearViewRender($event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-month-view *ngIf="interval === ''" [viewDate]="viewDate" [events]="calendarEvents"
+                [refresh]="refresh" (dayClicked)="dayClicked($event.day)" [headerTemplate]="customMonthViewHeader"
+                (beforeViewRender)="beforeViewRender($event)">
+            </mwl-calendar-month-view>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Continue</button>
+</div>

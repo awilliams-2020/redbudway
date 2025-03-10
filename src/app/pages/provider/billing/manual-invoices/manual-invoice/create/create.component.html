@@ -1,0 +1,159 @@
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<div #card class="card shadow m-auto my-5 card-width" *ngIf="!loading">
+    <div class="card-header">
+        <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center py-4 font-monospace">Manual Invoice</h4>
+        <hr>
+        <form #if #invoiceForm="ngForm" novalidate>
+            <div class="row g-0">
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <b>Customer</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <select class="form-select bg-light" aria-label="Customer Select"
+                                (change)="selectedCustomer($event)" required>
+                                <option value="" selected disabled>Select Customer</option>
+                                <option *ngFor="let customer of customers" value="{{customer | json}}">
+                                    {{customer.name}}</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Provide customer
+                            </div>
+                            <ng-container *ngIf="customer">
+                                <small class="text-muted">Email</small>
+                                <p class="mb-1">
+                                    <a class="" href="mailto: {{customer.email}}">{{customer.email}}</a>
+                                </p>
+                                <small class="text-muted">Phone</small>
+                                <p class="mb-1">{{customer.phone}}</p>
+                                <small class="text-muted">Address</small>
+                                <p class="text-dark mb-1">{{customer.address.lineOne}}</p>
+                                <p *ngIf="customer.address.line2" class="text-dark mb-1">
+                                    {{customer.address.lineTwo}}</p>
+                                <p class="text-dark mb-1">{{customer.address.city}},
+                                    {{customer.address.state}},
+                                    {{customer.address.zipCode}}</p>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <b>Cost</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary w-100 mb-1" (click)="addCost()" type="button"
+                                id="cost-addon">Add Cost</button>
+                            <ul class="list-group">
+                                <a href="javascript:void(0)" (click)="updateCost(product, i)"
+                                    *ngFor="let product of products; let i = index"
+                                    class="w-100 list-group-item d-flex justify-content-between align-items-start">
+                                    <small class="text-truncate">${{product.price}} x {{product.quantity}} -
+                                        {{product.title}}</small>
+                                    <button (click)="removeCost(i)" type="button" class="btn-close"
+                                        aria-label="Close"></button>
+                                </a>
+                                <li class="w-100 list-group-item d-flex justify-content-between align-items-start">
+                                    <small>Total ${{total}}</small>
+                                </li>
+                            </ul>
+                            <small *ngIf="productError" class="text-danger">Cost required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <b>Due Date</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <input type="date" [min]="minDate" id="dueDate" class="form-control bg-light"
+                                name="dueDate" [(ngModel)]="dueDate" aria-describedby="dueDue" placeholder=""
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                                <div class="col-auto">
+                                    <b>Memo</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <a (click)="addDescription()" class="link-dark" href="javascript:void(0)">
+                                <ng-container *ngIf="description === ''">
+                                    Add memo to customer?
+                                </ng-container>
+                                <ng-container *ngIf="description !== ''">
+                                    {{description}}
+                                </ng-container>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <b>Images</b>
+                                </div>
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row g-0">
+                                <div class="col-auto pe-2 pb-2">
+                                    <button type="button" (click)="openCamera()" *ngIf="images.length<8"
+                                        aria-label="Close" class="btn btn-secondary border shadow-sm">
+                                        <fa-icon [icon]="['fas','plus']"></fa-icon>
+                                    </button>
+                                    <input hidden #input type="file" accept="image/png, image/jpeg" (change)="addImage($event)">
+                                </div>
+                                <div class="col-auto pe-2 pb-2" *ngFor="let image of images; index as j">
+                                    <img src="{{image}}" class="d-block rounded pointer" width="50px" (click)="viewImage(j)"
+                                        height="50px" alt="...">
+                                </div>
+                            </div>
+                            <small class="text-muted">Not visible to customer</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <button *ngIf="!createSent" class="btn btn-secondary w-100" (click)="createInvoice(invoiceForm)">Create</button>
+            <button *ngIf="createSent" class="btn btn-secondary w-100" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+        </form>
+    </div>
+</div>

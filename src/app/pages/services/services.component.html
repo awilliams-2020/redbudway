@@ -1,0 +1,56 @@
+<div class="row" *ngIf="loading">
+    <div class="col text-center py-4">
+        <div role="status" class="spinner spinner-border">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+<div class="row mb-5" infiniteScroll [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollDisabled]="loading" [scrollWindow]="true">
+    <div *ngFor="let fixedPrice of fixedPrices" class="col-lg-4 col-md-6 py-3">
+        <app-service-card [service]="fixedPrice" [link]="['/fixed-price', fixedPrice.priceId]"></app-service-card>
+    </div>
+    <div *ngFor="let quote of quotes" class="col-lg-4 col-md-6 py-3">
+        <app-service-card [service]="quote" [link]="['/quote', quote.quoteId]"></app-service-card>
+    </div>
+    <div class="col text-center mt-5" *ngIf="!loading && !quotes.length && !fixedPrices.length">
+        <h3 class="mb-5">We're sorry, but there are no<b>&nbsp;{{selectedCategory}}&nbsp;</b><ng-container *ngIf="selectedSubCategory !== ''">/<b>&nbsp;{{selectedSubCategory}}&nbsp;</b></ng-container>
+            <ng-container *ngIf="view === 'quotes'"><span class="dashed-underline">quotes</span> you can request</ng-container>
+            <ng-container *ngIf="view === 'fixed-prices'">services offered</ng-container>
+            <ng-container *ngIf="state !== ''"> in <ng-container *ngIf="city!==''">{{city}},</ng-container> {{state | titlecase}}</ng-container> yet.
+        </h3>
+        <p class="mb-5" *ngIf="view === 'fixed-prices'">Have services to offer?&nbsp;<a class="link-dark" routerLink="/session/provider-signup">sign up</a></p>
+        <p class="mb-5" *ngIf="view === 'quotes'">Want to offer quotes?&nbsp;<a class="link-dark" routerLink="/session/provider-signup">sign up</a></p>
+        <div class="container">
+            <fieldset class="ad-container">
+                <legend>advertisement</legend>
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-5202373050833043"
+                    data-ad-slot="9748822532"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true">
+                </ins>
+            </fieldset> 
+        </div>
+    </div>
+</div>
+<nav class="navbar fixed-bottom navbar-light bg-light border-top">
+    <div class="container-fluid">
+        <div class="form-check form-switch">
+            <input [disabled]="loading" [checked]="view === 'quotes'" [ngClass]="{'bg-dark': view === 'quotes'}" class="form-check-input border-secondary pointer" type="checkbox" id="viewSwitch"
+                (change)="switchView()">
+            <label class="form-check-label" for="viewSwitch"><small>{{ view === 'quotes' ? 'Quotes' : 'Fixed Prices' }}</small></label>
+        </div>
+        <a href="javascript:void(0)" class="float-end link-dark" (click)="setLocation('update')">
+            <div class="row g-1">
+                <div class="col-auto">
+                    <fa-icon [icon]="['fas','location-crosshairs']" size="lg"></fa-icon>
+                </div>
+                <div class="col" *ngIf="city !== '' || state !== ''">
+                    <small><ng-container *ngIf="city !==''">{{city}}, </ng-container> {{state}}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+</nav>

@@ -1,0 +1,14 @@
+<ngb-toast
+    *ngFor="let toast of toastService.toasts"
+    [class]="toast.classname"
+    [autohide]="true"
+    [delay]="toast.delay || 5000"
+    (hidden)="toastService.remove(toast)"
+>
+    <ng-template ngbToastHeader>
+        <div class="me-auto">
+            <img width="25" src="assets/images/icon.png">
+        </div>
+    </ng-template>
+    {{ toast.text }}
+</ngb-toast>

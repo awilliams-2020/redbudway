@@ -1,0 +1,24 @@
+<app-page-loader #pageLoader></app-page-loader>
+<div class="container px-4" *ngIf="!pageLoader.isLoading()">
+    <div class="card shadow m-auto my-5 card-width">
+        <div class="card-header">
+            <img width="25" src="assets/images/icon.png">
+            <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="card-body my-5 text-center">
+            <ng-container *ngIf="!verified">
+                <fa-icon [icon]="['fas','skull-crossbones']" size="6x"></fa-icon>
+                <h2 class="text-muted mt-4">Verification Error...</h2>
+                <h1 class="card-title alice-font">Token Expired</h1>
+                <p>Token has expired and could not verify email. Resend another email verfication to activate your account.</p>
+                <button type="button" class="btn btn-secondary mt-4" aria-label="Close" (click)="send()">Resend Verification</button>
+            </ng-container>
+            <ng-container *ngIf="verified">
+                <fa-icon class="text-success" [icon]="['far','envelope']" size="6x"></fa-icon>
+                <h2 class="text-muted">Account Activated!!!</h2>
+                <h1 class="alice-font">Email Verified</h1>
+                <p>Your email has been verified and account is now activated. You can now book services.</p>
+            </ng-container>
+        </div>
+    </div>
+</div>

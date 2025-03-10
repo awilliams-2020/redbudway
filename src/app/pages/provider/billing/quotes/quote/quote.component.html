@@ -1,0 +1,265 @@
+<div *ngIf="loading" class="pt-5 text-center">
+    <span class="spinner spinner-border text-dark" aria-hidden="true"></span>
+</div>
+<app-toast></app-toast>
+<div class="card shadow m-auto my-5 card-width" *ngIf="!loading">
+    <div class="card-header">
+        <button type="button" class="close btn-close float-end" aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center py-4 font-monospace">Quote</h4>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title text-center border rounded list-group-item" [ngClass]="{
+                    'list-group-item-warning': quote.status === 'draft',
+                    'list-group-item-primary': quote.status === 'open',
+                    'list-group-item-success': quote.status === 'accepted',
+                    'list-group-item-secondary': quote.status === 'canceled'
+                }">
+                    {{quote.status | titlecase}}
+                </h5>
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        <a *ngIf="quote.status !== 'draft' && !downloading" class="link-dark" href="javascript:void(0)" (click)="downloadPDF()">
+                            <p class="text-center">{{quote.number}}</p>
+                        </a>
+                        <div *ngIf="quote.status !== 'draft' && downloading" role="status" class="spinner-border spinner-border-sm">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p *ngIf="quote.status === 'draft'" class="text-center">{{quote.number}}</p>
+                    </div>
+                    <a #pdf href="" hidden></a>
+                </div>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Customer</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <small class="text-muted">Name</small>
+                        <p class="mb-1 font-monospace">{{quote.customer.name}}</p>
+                        <small class="text-muted">Email</small>
+                        <p class="mb-1 font-monospace">
+                            <a class="link-dark" href="mailto: {{quote.customer.email}}">{{quote.customer.email}}</a>
+                        </p>
+                        <small class="text-muted">Phone</small>
+                        <p class="mb-1 font-monospace">{{quote.customer.phone}}</p>
+                        <small class="text-muted">Address</small>
+                        <p class="text-dark mb-1 font-monospace">{{quote.customer.address.lineOne}}</p>
+                        <p *ngIf="quote.customer.address.lineTwo" class="text-dark mb-1 font-monospace">
+                            {{quote.customer.address.lineTwo}}</p>
+                        <p class="text-dark mb-1 font-monospace">{{quote.customer.address.city}},
+                            {{quote.customer.address.state}},
+                            {{quote.customer.address.zipCode}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Request</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden view-more">
+                            <p #request class="mb-1 font-monospace">{{quote.request}}</p>
+                        </div>
+                        <div class="row" *ngIf="request.offsetHeight > 120">
+                            <div class="col">
+                            </div>
+                            <div class="col-auto text-muted">
+                                <a class="link-dark" href="javascript:void(0)" (click)="viewMore($event, request)"><small>view more</small></a>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-auto pe-2 pb-2" *ngFor="let image of quote.images; index as j">
+                                <img src="{{image}}" class="d-block rounded pointer" width="50px" (click)="viewImage(image)"
+                                    height="50px" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Service</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <small class="text-muted">Tile</small>
+                        <p class="mb-1 font-monospace">{{quote.service.title}}</p>
+                        <small class="text-muted" *ngIf="quote.service.description">Description</small>
+                        <div class="overflow-hidden view-more">
+                            <p #description class="mb-1 font-monospace">{{quote.service.description}}</p>
+                        </div>
+                        <div class="row" *ngIf="description.offsetHeight > 120">
+                            <div class="col">
+                            </div>
+                            <div class="col-auto text-muted">
+                                <a class="link-dark" href="javascript:void(0)" (click)="viewMore($event, description)"><small>view more</small></a>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Cost</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <ng-template #total_item>
+                                <li class="w-100 list-group-item d-flex justify-content-between align-items-start"
+                                    [ngClass]="{
+                                            'list-group-item-warning': quote.status === 'draft',
+                                            'list-group-item-primary': quote.status === 'open',
+                                            'list-group-item-success': quote.status === 'accepted',
+                                            'list-group-item-secondary': quote.status === 'canceled'
+                                        }">
+                                    <small class="text-truncate">Total ${{total}}</small>
+                                </li>
+                            </ng-template>
+                            <ng-template #edit>
+                                <button class="btn btn-secondary w-100 mb-1" (click)="addCost()" type="button" id="cost-addon">Add Cost</button>
+                                <ul class="list-group">
+                                    <a href="javascript:void(0)" (click)="updateCost(product)"
+                                        *ngFor="let product of quote.service.products; let i = index"
+                                        class="w-100 list-group-item d-flex justify-content-between align-items-start">
+                                        <small class="text-truncate">${{product.price}} x {{product.quantity}} -
+                                            {{product.title}}</small>
+                                        <button (click)="removeCost(i)" type="button" class="btn-close"
+                                            aria-label="Close"></button>
+                                    </a>
+                                    <ng-container *ngTemplateOutlet="total_item"></ng-container>
+                                </ul>
+                            </ng-template>
+                            <ng-template #read>
+                                <ng-container *ngFor="let product of quote.service.products; let i = index">
+                                    <div class="d-flex justify-content-between" [ngClass]="{'mt-3': i>0}">
+                                        <span class="font-monospace text-truncate">{{product.title}}</span>
+                                        <span class="font-monospace">${{(product.price/100) * product.quantity}}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-muted">Qty {{product.quantity}}</small>
+                                        <small class="text-muted">${{(product.price/100).toFixed(2)}} each</small>
+                                    </div>
+                                </ng-container>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <span class="font-monospace">Total</span>
+                                    <span class="font-monospace">${{total}}</span>
+                                </div>
+                            </ng-template>
+                            <ng-container *ngIf="quote.status === 'draft'; then edit else read"></ng-container>
+                        </ul>
+                        <small *ngIf="this.quote.service.products.length === 0 && productError"
+                            class="text-danger">Add cost</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4" *ngIf="quote.description !== '' || quote.status === 'draft'">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <b>Memo</b>
+                            </div>
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <a (click)="addDescription()" class="link-dark font-monospace" href="javascript:void(0)"
+                            *ngIf="quote.status === 'draft'">
+                            <ng-container *ngIf="quote.description === ''">
+                                Add memo to customer?
+                            </ng-container>
+                            <ng-container *ngIf="quote.description !== ''">
+                                {{quote.description}}
+                            </ng-container>
+                        </a>
+                        <p *ngIf="quote.status !== 'draft'">{{quote.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" *ngIf="quote.status === 'draft'">
+            <div class="col">
+                <button *ngIf="!cancelSent" [disabled]="finalizeSent" class="btn btn-danger w-100"
+                    (click)="cancelQuote()">Cancel</button>
+                <button *ngIf="cancelSent" class="btn btn-danger w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col">
+                <button *ngIf="!finalizeSent" [disabled]="cancelSent" class="btn btn-secondary w-100"
+                    (click)="finalizeQuote()">Send</button>
+                <button *ngIf="finalizeSent" class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="quote.status === 'open'">
+            <div class="col">
+                <button *ngIf="!cancelSent" [disabled]="reviseSent" class="btn btn-danger w-100"
+                    (click)="cancelQuote()">Cancel</button>
+                <button *ngIf="cancelSent" class="btn btn-danger w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col">
+                <button *ngIf="!reviseSent" [disabled]="cancelSent" class="btn btn-warning w-100"
+                    (click)="reviseQuote()">Revise</button>
+                <button *ngIf="reviseSent" class="btn btn-warning w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="quote.status === 'accepted'">
+            <div class="col">
+                <a class="btn btn-secondary w-100 text-light"
+                    [routerLink]="[quote.invoiceId]">View
+                    Invoice</a>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="quote.status === 'accepted' || quote.status === 'canceled'">
+            <div class="col text-center">
+                <small class="text-muted">Created </small>
+                <small>{{quote.created | date:'short'}}</small>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="quote.status === 'draft' || quote.status === 'open'">
+            <div class="col text-center">
+                <small class="text-muted">Expires </small>
+                <small class="text-danger">{{quote.expires | date:'short'}}</small>
+            </div>
+        </div>
+    </div>
+</div>

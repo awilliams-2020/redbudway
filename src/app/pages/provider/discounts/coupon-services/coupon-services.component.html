@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <img width="25" src="assets/images/icon.png">
+    <button type="button" class="close btn-close" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="error">
+        Error updating services
+    </ngb-alert>
+    <form #sf #servicesForm="ngForm" novalidate>
+        <div class="form-group  mb-4">
+            <label for="services">Applicable services</label>
+            <select class="form-select" name="services" id="services" multiple [(ngModel)]="coupon.services" required>
+                <ng-container *ngFor="let service of services">
+                    <option *ngIf="!coupon.subscriptions || service.subscription" [ngValue]="service.id">{{service.title}}</option>
+                </ng-container>
+            </select>
+            <div class="invalid-feedback">
+                One service required
+            </div>
+        </div>
+        <div class="form-group mb-4 float-end">
+            <button *ngIf="!isDisabled" (click)="update(servicesForm)" class="btn btn-secondary">Update</button>
+            <button *ngIf="isDisabled" class="btn btn-secondary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+        </div>
+    </form>
+</div>
