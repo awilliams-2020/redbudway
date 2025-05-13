@@ -283,7 +283,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://redbudway.com/fixed-prices/Finance/Taxex</loc>
+    <loc>https://redbudway.com/fixed-prices/Finance/Taxes</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -311,16 +311,6 @@
 
   <url>
     <loc>https://redbudway.com/fixed-prices/Home/Driveways%2C%20Patios%20&amp;%20Walks</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://redbudway.com/fixed-prices/Home/Ducts%20&amp;%20Vents</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://redbudway.com/fixed-prices/Home/Ducts%20&amp;%20Vents</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -561,7 +551,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://redbudway.com/quotes/Personall</loc>
+    <loc>https://redbudway.com/quotes/Personal</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -695,7 +685,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://redbudway.com/quotes/Finance/Taxex</loc>
+    <loc>https://redbudway.com/quotes/Finance/Taxes</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -723,16 +713,6 @@
 
   <url>
     <loc>https://redbudway.com/quotes/Home/Driveways%2C%20Patios%20&amp;%20Walks</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://redbudway.com/quotes/Home/Ducts%20&amp;%20Vents</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://redbudway.com/quotes/Home/Ducts%20&amp;%20Vents</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>

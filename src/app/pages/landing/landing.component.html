@@ -2,185 +2,195 @@
 <!-- Main Content -->
 <main>
     <!-- Hero Section -->
-    <section class="container-fluid my-lg-5">
+    <section class="container-fluid my-lg-5" aria-labelledby="hero-heading">
         <div class="row top-banner text-center">
             <div class="col-lg-6 pt-5">
                 <nav aria-label="Service Categories">
+                    <h2 class="visually-hidden">Browse Service Categories</h2>
                     <a [routerLink]="['fixed-prices', service.category]" *ngFor="let service of services"
-                        class="btn btn-light shadow-sm border rounded-pill me-3 mb-3 text-nowrap">
-                        <h2 class="font-monospace m-0">
+                        class="btn btn-light shadow-sm border rounded-pill me-3 mb-3 text-nowrap"
+                        [attr.aria-label]="'Browse ' + service.category + ' services'">
+                        <h3 class="font-monospace m-0">
                             {{service.category}}
-                        </h2>
+                        </h3>
                     </a>
                 </nav>
-                <div><a routerLink="/quotes" class="text-dark font-monospace">View quoted services?</a></div>
+                <div><a routerLink="/quotes" class="text-dark font-monospace" aria-label="View services that require quotes">View quoted services?</a></div>
             </div>
             <div class="col-lg-6">
-                <h1 class="text-custom alice-font mb-0 display-1 mt-5 pt-5">Redbud Way</h1>
+                <h1 id="hero-heading" class="text-custom alice-font mb-0 display-1 mt-5 pt-5">Redbud Way</h1>
                 <p class="lead text-muted fw-normal">
-                    <span class="fw-bold">Shop</span>, <span class="fw-bold">Book</span>, and <span class="fw-bold">Pay</span> for all your service needs.</p>
+                    <span class="fw-bold">Shop</span>, <span class="fw-bold">Book</span>, and <span class="fw-bold">Pay</span> for all your service needs.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section class="container-fluid py-lg-5">
+    <section class="container-fluid py-lg-5" aria-labelledby="about-heading">
         <div class="row padding-y bg-light">
             <div class="col-lg-6 text-center px-5">
-                <img src="assets/images/icon.png" class="icon-width" alt="Redbud Way Icon">
+                <img src="assets/images/icon.png" class="icon-width" alt="Redbud Way Logo" width="100" height="100">
+                <h2 id="about-heading" class="visually-hidden">About Redbud Way</h2>
                 <p class="fw-light my-5 display-6">
-                    Redbud Way is service marketplace for buying and selling services. Freelancers, independent contractors,
+                    Redbud Way is a service marketplace for buying and selling services. Freelancers, independent contractors,
                     or companies in various industries can advertise their services and get hired by people who need their
                     help.
                 </p>
             </div>
             <div class="col-lg-6 text-center">
-                <img src="assets/images/marketplace.svg" class="max-svg-width" alt="Marketplace Illustration">
+                <img src="assets/images/marketplace.svg" class="max-svg-width" alt="Illustration of Redbud Way marketplace connecting service providers and customers" width="600" height="400">
             </div>
         </div>
     </section>
 
     <!-- Advertisement Section -->
-    <section class="container">
+    <section class="container" aria-label="Advertisement">
         <fieldset class="ad-container mt-5">
-            <legend>advertisement</legend>
+            <legend>Advertisement</legend>
             <ins class="adsbygoogle"
                 style="display:block; text-align:center;"
                 data-ad-client="ca-pub-5202373050833043"
                 data-ad-slot="5447912615"
                 data-ad-layout="in-article"
                 data-ad-format="fluid"
-                data-full-width-responsive="true">
+                data-full-width-responsive="true"
+                aria-label="Advertisement">
             </ins>
         </fieldset> 
     </section>
 
     <!-- Features Section -->
-    <section class="container">
+    <section class="container" aria-labelledby="features-heading">
+        <h2 id="features-heading" class="visually-hidden">Key Features</h2>
         <div class="row padding-top text-center">
             <div class="col-lg-4 mb-5">
-                <h2 class="font-monospace"><fa-icon class="text-custom"
-                        [icon]="['fas','check']"></fa-icon>&nbsp;Instant Booking</h2>
+                <h3 class="font-monospace">
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <span>Instant Booking</span>
+                </h3>
             </div>
             <div class="col-lg-4 mb-5">
-                <h2 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']"></fa-icon>&nbsp;Trusted <a class="link-dark"
-                        href="https://stripe.com" rel="nofollow">Payments</a>&nbsp;<a class="link-dark"
-                        href="https://stripe.com" rel="nofollow"><img width="100" src="assets/images/stripe.svg" alt="Stripe Payment"></a>
-                </h2>
+                <h3 class="font-monospace">
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <span>Trusted <a class="link-dark" href="https://stripe.com" rel="nofollow noopener">Payments</a></span>
+                    <a class="link-dark" href="https://stripe.com" rel="nofollow noopener">
+                        <img width="100" src="assets/images/stripe.svg" alt="Secured by Stripe Payments" loading="lazy">
+                    </a>
+                </h3>
             </div>
             <div class="col-lg-4 mb-5">
-                <h2 class="font-monospace"><fa-icon class="text-custom" [icon]="['fas','check']"></fa-icon>&nbsp;Quote Approvals</h2>
+                <h3 class="font-monospace">
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <span>Quote Approvals</span>
+                </h3>
             </div>
         </div>
     </section>
-</main>
 
-<div class="container padding-bottom">
-    <div class="row text-center">
-        <div class="col-lg-6 mb-5">
-            <h2 class="font-monospace"><fa-icon class="text-custom" [icon]="['fas','check']"></fa-icon>&nbsp;Regular or
-                Subscription Services</h2>
-        </div>
-        <div class="col-lg-6 mb-5">
-            <h2 class="font-monospace">
-                <fa-icon class="text-custom" [icon]="['fas','check']"></fa-icon>&nbsp;<a class="link-dark"
-                    href="https://stripe.com/identity" rel="nofollow">Verified</a>&nbsp;Providers&nbsp;<a class="link-dark"
-                    href="https://stripe.com/identity" rel="nofollow"><img width="100"
-                        src="assets/images/stripe.svg"></a>
-            </h2>
-        </div>
-    </div>
-</div>
-
-<!-- Services -->
-<div class="container padding-bottom">
-    <div class="row">
-        <div class="col-lg-4 col-md-6 py-3">
-            <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                <p class="text-custom font-monospace lead" style="margin-top:25%;">What are you in need of?</p>
+    <section class="container padding-bottom" aria-labelledby="additional-features-heading">
+        <h2 id="additional-features-heading" class="visually-hidden">Additional Features</h2>
+        <div class="row text-center">
+            <div class="col-lg-6 mb-5">
+                <h3 class="font-monospace">
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <span>Regular or Subscription Services</span>
+                </h3>
             </div>
-        </div>
-        <div *ngFor="let sample of samples" class="col-lg-4 col-md-6 py-3">
-            <app-service-card [service]="sample" [link]="[sample.link]"></app-service-card>
-        </div>
-        <div class="col-lg-4 col-md-6 py-3">
-            <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                <p class="text-custom font-monospace lead" style="margin-top:25%;">Maybe you need a quote?</p>
-            </div>
-        </div>
-        <div *ngFor="let sampleQuote of sampleQuotes" class="col-lg-4 col-md-6 py-3">
-            <app-service-card [service]="sampleQuote" [link]="[sampleQuote.link]"></app-service-card>
-        </div>
-        <div class="col-lg-4 col-md-6 py-3">
-            <a routerLink="/session/customer-signup">
-                <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                    <p class="text-custom font-monospace lead" style="margin-top:25%;">Sign up today!</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <fieldset class="ad-container mb-5">
-        <legend>advertisement</legend>
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-5202373050833043"
-            data-ad-slot="2821749273"
-            data-ad-format="auto"
-            data-full-width-responsive="true">
-        </ins>
-    </fieldset> 
-</div>
-
-<!-- Footer -->
-<div class="container-fluid bg-light">
-    <footer class="pt-5 px-lg-5 px-3">
-        <div class="row">
-            <div class="col-lg-2 col-md-4 col-6">
-                <h5>Service Provider</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a routerLink="/how-it-works" class="nav-link p-0 text-muted">How it
-                            works</a></li>
-                    <li *ngIf="!isProviderLoggedIn" class="nav-item mb-2"><a routerLink="/session/provider-login"
-                            class="nav-link p-0 text-muted">Login</a></li>
-                    <li *ngIf="isProviderLoggedIn" class="nav-item mb-2"><a [routerLink]="['/provider', providerId]"
-                        class="nav-link p-0 text-muted">Business</a></li>
-                    <li *ngIf="!isProviderLoggedIn" class="nav-item mb-2"><a routerLink="/session/provider-signup"
-                            class="nav-link p-0 text-muted">Sign up</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4 col-6">
-                <h5>Policies</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a routerLink="/terms" class="nav-link p-0 text-muted">Terms</a></li>
-                    <li class="nav-item mb-2"><a routerLink="/privacy" class="nav-link p-0 text-muted">Privacy</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4 col-6 mt-lg-0 mt-md-0 mt-3">
-                <h5>Company</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a routerLink="/about" class="nav-link p-0 text-muted">About</a></li>
-                    <li class="nav-item mb-2"><a href="https://buy.stripe.com/bIY7tt0QI0gVcI8eUU" rel="nofollow"
-                            class="nav-link p-0 text-muted">Donate</a></li>
-                </ul>
-            </div>
-            <!-- <div class="col-md-5 offset-md-1 mb-3 text-center">
-                <img src="assets/images/marketplace.svg" width="50" height="50">
-            </div> -->
-
-        </div>
-        <div class="d-flex justify-content-between py-4 mt-4 border-top">
-            <p>© 2022 Redbud Way LLC</p>
-            <ul class="list-unstyled d-flex">
-                <li class="ms-3">
-                    <a href="https://www.facebook.com/redbudway" target="_blank" rel="noopener noreferrer">
-                        <fa-icon size="xl" [icon]="['fab','facebook']"></fa-icon>
+            <div class="col-lg-6 mb-5">
+                <h3 class="font-monospace">
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <span><a class="link-dark" href="https://stripe.com/identity" rel="nofollow noopener">Verified</a> Providers</span>
+                    <a class="link-dark" href="https://stripe.com/identity" rel="nofollow noopener">
+                        <img width="100" src="assets/images/stripe.svg" alt="Identity verification by Stripe" loading="lazy">
                     </a>
-                </li>
-            </ul>
+                </h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="container padding-bottom" aria-labelledby="services-heading">
+        <h2 id="services-heading" class="visually-hidden">Example Services</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 py-3">
+                <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
+                    <p class="text-custom font-monospace lead" style="margin-top:25%;">What are you in need of?</p>
+                </div>
+            </div>
+            <div *ngFor="let sample of samples" class="col-lg-4 col-md-6 py-3">
+                <app-service-card [service]="sample" [link]="[sample.link]"></app-service-card>
+            </div>
+            <div class="col-lg-4 col-md-6 py-3">
+                <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
+                    <p class="text-custom font-monospace lead" style="margin-top:25%;">Maybe you need a quote?</p>
+                </div>
+            </div>
+            <div *ngFor="let sampleQuote of sampleQuotes" class="col-lg-4 col-md-6 py-3">
+                <app-service-card [service]="sampleQuote" [link]="[sampleQuote.link]"></app-service-card>
+            </div>
+            <div class="col-lg-4 col-md-6 py-3">
+                <a routerLink="/session/customer-signup" aria-label="Sign up for Redbud Way">
+                    <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
+                        <p class="text-custom font-monospace lead" style="margin-top:25%;">Sign up today!</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" aria-label="Advertisement">
+        <fieldset class="ad-container mb-5">
+            <legend>Advertisement</legend>
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-5202373050833043"
+                data-ad-slot="2821749273"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+                aria-label="Advertisement">
+            </ins>
+        </fieldset> 
+    </section>
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-light" aria-label="Footer">
+        <div class="pt-5 px-lg-5 px-3">
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h2 class="h5">Service Provider</h2>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a routerLink="/how-it-works" class="nav-link p-0 text-muted">How it works</a></li>
+                        <li *ngIf="!isProviderLoggedIn" class="nav-item mb-2"><a routerLink="/session/provider-login" class="nav-link p-0 text-muted">Login</a></li>
+                        <li *ngIf="isProviderLoggedIn" class="nav-item mb-2"><a [routerLink]="['/provider', providerId]" class="nav-link p-0 text-muted">Business</a></li>
+                        <li *ngIf="!isProviderLoggedIn" class="nav-item mb-2"><a routerLink="/session/provider-signup" class="nav-link p-0 text-muted">Sign up</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h2 class="h5">Policies</h2>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a routerLink="/terms" class="nav-link p-0 text-muted">Terms</a></li>
+                        <li class="nav-item mb-2"><a routerLink="/privacy" class="nav-link p-0 text-muted">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mt-lg-0 mt-md-0 mt-3">
+                    <h2 class="h5">Company</h2>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a routerLink="/about" class="nav-link p-0 text-muted">About</a></li>
+                        <li class="nav-item mb-2"><a href="https://buy.stripe.com/bIY7tt0QI0gVcI8eUU" rel="nofollow noopener" class="nav-link p-0 text-muted">Donate</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between py-4 mt-4 border-top">
+                <p>© 2022 Redbud Way LLC</p>
+                <ul class="list-unstyled d-flex">
+                    <li class="ms-3">
+                        <a href="https://www.facebook.com/redbudway" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
+                            <fa-icon size="xl" [icon]="['fab','facebook']" aria-hidden="true"></fa-icon>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </footer>
-</div>
+</main>
