@@ -33,9 +33,8 @@
                 <img src="assets/images/icon.png" class="icon-width" alt="Redbud Way Logo" width="100" height="100">
                 <h2 id="about-heading" class="visually-hidden">About Redbud Way</h2>
                 <p class="fw-light my-5 display-6">
-                    Redbud Way is a service marketplace for buying and selling services. Freelancers, independent contractors,
-                    or companies in various industries can advertise their services and get hired by people who need their
-                    help.
+                    Redbud Way connects you with trusted local service providers. Whether you need home repairs, professional services, 
+                    or specialized expertise, our platform makes it easy to find, book, and pay for quality services in your area.
                 </p>
             </div>
             <div class="col-lg-6 text-center">
@@ -62,28 +61,31 @@
 
     <!-- Features Section -->
     <section class="container" aria-labelledby="features-heading">
-        <h2 id="features-heading" class="visually-hidden">Key Features</h2>
+        <h2 id="features-heading" class="visually-hidden">Features</h2>
         <div class="row padding-top text-center">
             <div class="col-lg-4 mb-5">
                 <h3 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>&nbsp;
                     <span>Instant Booking</span>
                 </h3>
+                <p class="text-muted mt-2">Book services instantly with our easy-to-use platform</p>
             </div>
             <div class="col-lg-4 mb-5">
                 <h3 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
-                    <span>Trusted <a class="link-dark" href="https://stripe.com" rel="nofollow noopener">Payments</a></span>
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>&nbsp;
+                    <span>Trusted <a class="link-dark" href="https://stripe.com" rel="nofollow noopener">Payments</a></span>&nbsp;
                     <a class="link-dark" href="https://stripe.com" rel="nofollow noopener">
                         <img width="100" src="assets/images/stripe.svg" alt="Secured by Stripe Payments" loading="lazy">
                     </a>
                 </h3>
+                <p class="text-muted mt-2">Secure payment processing with industry-leading protection</p>
             </div>
             <div class="col-lg-4 mb-5">
                 <h3 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>&nbsp;
                     <span>Quote Approvals</span>
                 </h3>
+                <p class="text-muted mt-2">Get and compare quotes from multiple providers</p>
             </div>
         </div>
     </section>
@@ -93,29 +95,31 @@
         <div class="row text-center">
             <div class="col-lg-6 mb-5">
                 <h3 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>&nbsp;
                     <span>Regular or Subscription Services</span>
                 </h3>
+                <p class="text-muted mt-2">Choose between one-time or recurring service options</p>
             </div>
             <div class="col-lg-6 mb-5">
                 <h3 class="font-monospace">
-                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>
-                    <span><a class="link-dark" href="https://stripe.com/identity" rel="nofollow noopener">Verified</a> Providers</span>
+                    <fa-icon class="text-custom" [icon]="['fas','check']" aria-hidden="true"></fa-icon>&nbsp;
+                    <span><a class="link-dark" href="https://stripe.com/identity" rel="nofollow noopener">Verified</a> Providers</span>&nbsp;
                     <a class="link-dark" href="https://stripe.com/identity" rel="nofollow noopener">
                         <img width="100" src="assets/images/stripe.svg" alt="Identity verification by Stripe" loading="lazy">
                     </a>
                 </h3>
+                <p class="text-muted mt-2">All providers are verified and background-checked</p>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- Example Services Section -->
     <section class="container padding-bottom" aria-labelledby="services-heading">
         <h2 id="services-heading" class="visually-hidden">Example Services</h2>
         <div class="row">
             <div class="col-lg-4 col-md-6 py-3">
                 <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                    <p class="text-custom font-monospace lead" style="margin-top:25%;">What are you in need of?</p>
+                    <p class="text-custom font-monospace lead" style="margin-top:25%;">What service do you need today?</p>
                 </div>
             </div>
             <div *ngFor="let sample of samples" class="col-lg-4 col-md-6 py-3">
@@ -123,18 +127,16 @@
             </div>
             <div class="col-lg-4 col-md-6 py-3">
                 <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                    <p class="text-custom font-monospace lead" style="margin-top:25%;">Maybe you need a quote?</p>
+                    <p class="text-custom font-monospace lead" style="margin-top:25%;">Need a custom quote?</p>
                 </div>
             </div>
             <div *ngFor="let sampleQuote of sampleQuotes" class="col-lg-4 col-md-6 py-3">
                 <app-service-card [service]="sampleQuote" [link]="[sampleQuote.link]"></app-service-card>
             </div>
             <div class="col-lg-4 col-md-6 py-3">
-                <a routerLink="/session/customer-signup" aria-label="Sign up for Redbud Way">
-                    <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
-                        <p class="text-custom font-monospace lead" style="margin-top:25%;">Sign up today!</p>
-                    </div>
-                </a>
+                <div class="card shadow-sm m-auto h-100 text-center bg-light types-card accent-border">
+                    <p class="text-custom font-monospace lead" style="margin-top:25%;">Join our community today!</p>
+                </div>
             </div>
         </div>
     </section>
