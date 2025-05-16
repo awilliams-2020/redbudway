@@ -1,290 +1,300 @@
 <!-- <span class="nowrap border border-dark text-dark fw-bolder px-2 py-1 rounded-1 shadow-sm small align-middle">coming soon</span> -->
 <app-navbar></app-navbar>
-<div class="container">
-    <div class="row my-5">
-        <div class="col text-center mb-5 alice-font">
-            <h1 class="display-1 mb-0">How it works</h1>
-            <p class="lead text-muted fw-normal">for service providers</p>
-        </div>
-    </div>
-    <div class="row text-center">
-        <div class="col-lg-4 pb-5 border-bottom shadow">
-            <div class="card border-0">
-                <div class="card-body mt-5">
-                    <img class="w-100 max-width" src="assets/images/profile.svg">
-                    <h2 class="font-monospace"><span class="alice-font text-custom">1.</span> Add Your Profile</h2>
-                </div>
+<main>
+    <!-- Hero Section -->
+    <section class="container" aria-labelledby="hero-heading">
+        <div class="row my-5">
+            <div class="col text-center mb-5 alice-font">
+                <h1 id="hero-heading" class="display-1 mb-0">How it works</h1>
+                <p class="text-muted alice-font fw-normal lead">Join our service marketplace and connect with customers looking for your professional services</p>
             </div>
         </div>
-        <div class="col-lg-4 bg-light">
-            <fieldset class="ad-square-container">
-                <legend>advertisement</legend>
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-5202373050833043"
-                    data-ad-slot="8689185448"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true">
-                </ins>
-            </fieldset>
-        </div>
-        <div class="col-lg-4 pb-5 border-bottom shadow">
-            <div class="card border-0">
-                <div class="card-body mt-4">
-                    <img class="w-100 max-width-potrait" src="assets/images/list-services.svg">
-                    <h2 class="font-monospace"><span class="alice-font text-custom">2.</span> List Your Services</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 bg-light">
-            <fieldset class="ad-square-container">
-                <legend>advertisement</legend>
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-5202373050833043"
-                    data-ad-slot="8381197717"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true">
-                </ins>
-            </fieldset> 
-        </div>
-        <div class="col-lg-4 pb-5 border-bottom shadow">
-            <div class="card border-0">
-                <div class="card-body mt-4">
-                    <img class="w-100 max-width" src="assets/images/transfer.svg">
-                    <h2 class="font-monospace"><span class="alice-font text-custom">3.</span> Get Paid Weekly</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 bg-light"> 
-        </div>
-    </div>
-</div>
-<div class="container mb-5 pb-5 mt-lg-5 pt-lg-5">
-    <div class="row mt-5 pt-5">
-        <div class="col-lg-4 col-md-6 py-3 text-center">
-            <h2 class="alice-font display-3 mb-0">Categories</h2>
-            <div class="d-flex flex-wrap justify-content-center">
-                <p class="text-custom font-monospace me-3">Car</p>
-                <p class="text-custom font-monospace me-3">Care</p>
-                <p class="text-custom font-monospace me-3">Cleaning</p>
-                <p class="text-custom font-monospace me-3">Creative</p>
-                <p class="text-custom font-monospace me-3">Entertainment</p>
-                <p class="text-custom font-monospace me-3">Finance</p>
-                <p class="text-custom font-monospace me-3">Health</p>
-                <p class="text-custom font-monospace me-3">Home</p>
-                <p class="text-custom font-monospace me-3">Lawn & Garden</p>
-                <p class="text-custom font-monospace me-3">Legal</p>
-                <p class="text-custom font-monospace me-3">Moving & Storage</p>
-                <p class="text-custom font-monospace me-3">Personal</p>
-                <p class="text-custom font-monospace me-3">Pet & Animal</p>
-                <p class="text-custom font-monospace me-3">Real Estate</p>
-            </div>
-            <!-- <div class="card shadow-sm m-auto h-100 text-center bg-light types-card p-3">
+    </section>
 
-            </div> -->
-        </div>
-        <div *ngFor="let sample of samples" class="col-lg-4 col-md-6 py-3">
-            <app-service-card [service]="sample"
-                [link]="['/session/provider-signup']"></app-service-card>
-        </div>
-        <div *ngFor="let sampleQuote of sampleQuotes" class="col-lg-4 col-md-6 py-3">
-            <app-service-card [service]="sampleQuote"
-                [link]="['/session/provider-signup']"></app-service-card>
-        </div>
-    </div>
-</div>
-<div class="container-fluid bg-light mb-5 pb-5 mt-lg-5 pt-lg-5">
-    <div class="row mt-5 pt-5">
-        <div class="col text-center">
-            <h2 class="alice-font display-3 mb-0">Our features</h2>
-            <p class="alice-font text-muted fw-normal lead">but not all</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12 py-5">
-            <div class="card shadow m-auto custom-card">
-                <div class="card-body p-5">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Service Areas</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Simple Quote Revisions</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Invoices Generated Automatically</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>0% Selling Fee <span
-                                    class="nowrap border border-dark text-dark fw-bolder px-2 py-1 rounded-1 shadow-sm small align-middle">first
-                                    90 days</span></h2>
-                        </div>
+    <!-- Process Steps -->
+    <section class="container" aria-labelledby="process-heading">
+        <h2 id="process-heading" class="visually-hidden">Getting Started Process</h2>
+        <div class="row text-center">
+            <div class="col-lg-4 pb-5 border-bottom shadow">
+                <div class="card border-0">
+                    <div class="card-body mt-5">
+                        <img class="w-100 max-width" src="assets/images/profile.svg" alt="Create your profile illustration" width="300" height="300">
+                        <h3 class="font-monospace"><span class="alice-font text-custom">1.</span> Add Your Profile</h3>
+                        <p class="text-muted mt-3">Create your professional business profile to showcase your service expertise and build trust with potential customers.</p>
+                        <ul class="text-start text-muted mt-3">
+                            <li>Add your service business information</li>
+                            <li>Upload professional service photos</li>
+                            <li>Set your service coverage areas</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 col-sm-12 py-5">
-            <div class="card shadow m-auto custom-card">
-                <div class="card-body p-5">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Subscription Services</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Service Schedules</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Business Profile</h2>
-                        </div>
-                    </div>
-                    <hr class="text-muted">
-                    <div class="row py-2">
-                        <div class="col">
-                            <h2>Custom Promo Codes</h2>
-                        </div>
+            <div class="col-lg-4 bg-light">
+                <fieldset class="ad-square-container">
+                    <legend>Advertisement</legend>
+                    <ins class="adsbygoogle"
+                        style="display:block"
+                        data-ad-client="ca-pub-5202373050833043"
+                        data-ad-slot="8689185448"
+                        data-ad-format="auto"
+                        data-full-width-responsive="true"
+                        aria-label="Advertisement">
+                    </ins>
+                </fieldset>
+            </div>
+            <div class="col-lg-4 pb-5 border-bottom shadow">
+                <div class="card border-0">
+                    <div class="card-body mt-4">
+                        <img class="w-100 max-width-potrait" src="assets/images/list-services.svg" alt="List your services illustration" width="300" height="300">
+                        <h3 class="font-monospace"><span class="alice-font text-custom">2.</span> List Your Services</h3>
+                        <p class="text-muted mt-3">Create detailed service listings that highlight your offerings and attract the right customers in your service areas.</p>
+                        <ul class="text-start text-muted mt-3">
+                            <li>Set competitive service pricing</li>
+                            <li>Add comprehensive service descriptions</li>
+                            <li>Upload professional service photos</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 bg-light">
+                <fieldset class="ad-square-container">
+                    <legend>Advertisement</legend>
+                    <ins class="adsbygoogle"
+                        style="display:block"
+                        data-ad-client="ca-pub-5202373050833043"
+                        data-ad-slot="8381197717"
+                        data-ad-format="auto"
+                        data-full-width-responsive="true"
+                        aria-label="Advertisement">
+                    </ins>
+                </fieldset> 
+            </div>
+            <div class="col-lg-4 pb-5 border-bottom shadow">
+                <div class="card border-0">
+                    <div class="card-body mt-4">
+                        <img class="w-100 max-width" src="assets/images/transfer.svg" alt="Get paid illustration" width="300" height="300">
+                        <h3 class="font-monospace"><span class="alice-font text-custom">3.</span> Get Paid Weekly</h3>
+                        <p class="text-muted mt-3">Receive secure payments directly to your service business account with our reliable payment system.</p>
+                        <ul class="text-start text-muted mt-3">
+                            <li>Secure service payment processing</li>
+                            <li>Weekly service payouts</li>
+                            <li>Detailed payment history</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 bg-light"> 
+            </div>
         </div>
-    </div>
-</div>
-<div class="container pb-5 mt-lg-5 pt-lg-5">
-    <div class="row mt-5 pt-5">
-        <div class="col-lg-6 text-center mb-3">
-            <img src="assets/images/fee.svg" class="max-svg-width">
-            <h2 class="alice-font display-3 mb-0">Selling Fee</h2>
-        </div>
-        <div class="col-lg-6 px-4">
-            <p class="lead fw-normal pt-4">
-                When you make a sale, we deduct a fee from your payout automatically. We call this a
-                selling
-                fee. The
-                <mark>selling fee is <span class="fw-bold font-monospace">10%</span></mark> per invoice paid. You keep
-                the rest of your earnings.
-                Here's an example of how we apply the selling fee to your sales. Let's say that you're
-                providing
-                multiple services:
-            </p>
+    </section>
 
-            <ul>
-                <li class="fst-italic">
-                    If the first service is $500.00 USD, we'll deduct $50.00 for the selling fee.
-                </li>
-                <li class="fst-italic">
-                    If the second service is $100.00, we'll deduct $10.00 for the selling fee.
-                </li>
-            </ul>
+    <!-- Service Categories -->
+    <section class="container mb-5 pb-5 pt-lg-5" aria-labelledby="categories-heading">
+        <h2 id="categories-heading" class="alice-font display-3 mb-0 text-center">Service Categories</h2>
+        <p class="text-muted text-center mb-5 alice-font fw-normal lead">Choose from our wide range of service categories to find your perfect business niche</p>
+        <div class="row mt-5 pt-5">
+            <div class="col-lg-4 col-md-6 py-3 text-center">
+                <div class="d-flex flex-wrap justify-content-center">
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Car</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Care</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Cleaning</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Creative</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Entertainment</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Finance</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Health</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Home</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Lawn & Garden</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Legal</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Moving & Storage</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Personal</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Pet & Animal</p>
+                    </a>
+                    <a routerLink="/session/provider-signup" class="text-decoration-none">
+                        <p class="text-custom font-monospace me-3 mb-2">Real Estate</p>
+                    </a>
+                </div>
+            </div>
+            <div *ngFor="let sample of samples" class="col-lg-4 col-md-6 py-3">
+                <app-service-card [service]="sample" [link]="['/session/provider-signup']"></app-service-card>
+            </div>
+            <div *ngFor="let sampleQuote of sampleQuotes" class="col-lg-4 col-md-6 py-3">
+                <app-service-card [service]="sampleQuote" [link]="['/session/provider-signup']"></app-service-card>
+            </div>
+        </div>
+    </section>
 
-            <p class="lead fw-normal">The selling fee:</p>
-            <ul>
-                <li class="fst-italic">
-                    Includes the cost of payment processing. <small class="text-muted">(<a class="link-dark"
-                            href="https://stripe.com/pricing">2.9%
-                            Stripe fee</a> + Our 7.1% fee = 10% Selling fee)</small>
-                </li>
-                <li class="fst-italic">
-                    Applies to all checkout transactions for all service categories on Redbud Way.
-                </li>
-                <li class="fst-italic">
-                    Helps fund the Redbud Way experience.
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <fieldset class="ad-container">
-        <legend>advertisement</legend>
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-5202373050833043"
-            data-ad-slot="9330778303"
-            data-ad-format="auto"
-            data-full-width-responsive="true">
-        </ins>
-    </fieldset> 
-</div>
-<div class="container mb-5 pt-lg-5">
-    <hr>
-    <p class="alice-font lead fw-normal text-center text-muted pt-5 mb-0">Become a</p>
-    <h2 class="alice-font text-custom display-3 pb-5 text-center">Service Provider</h2>
-    <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="accountError">
-        Error creating acccount
-    </ngb-alert>
-    <form class="card-width m-auto" #sf #signUpForm="ngForm" novalidate>
-        <div class="form-floating my-4">
-            <input [disabled]="isDisabled" #emailInput="ngModel" [(ngModel)]="email" type="email" id="email" class="form-control bg-light" name="email" aria-describedby="email"
-                placeholder="" required appEmailValidation>
-            <label for="email">Email</label>
-            <div *ngIf="emailInput.invalid" class="invalid-feedback">
-                <div *ngIf="emailInput.errors?.['required']">
-                    Provide email
-                </div>
-                <div *ngIf="emailInput.errors?.['email'] && email !== ''">
-                    Invalid email format
-                </div>
+    <!-- Features Section -->
+    <section class="container-fluid bg-light mb-5 pb-5 mt-lg-5 pt-lg-5" aria-labelledby="features-heading">
+        <div class="row mt-5 pt-5">
+            <div class="col text-center">
+                <h2 id="features-heading" class="alice-font display-3 mb-0">Platform Features</h2>
+                <p class="alice-font text-muted fw-normal lead">Everything you need to grow your service business</p>
             </div>
-        </div>
-        <div class="form-group my-4 form-floating">
-            <input [disabled]="isDisabled" #passw="ngModel" [(ngModel)]="password" [type]="type" id="password"
-                class="form-control bg-light" name="password" aria-describedby="password" placeholder="" minlength="8"
-                required>
-            <label for="password">Password</label>
-            <div *ngIf="passw.invalid" class="invalid-feedback">
-                <div *ngIf="passw.errors?.['required']">
-                    Password required
-                </div>
-                <div *ngIf="passw.errors?.['minlength']">
-                    Minimum of 8 characters
-                </div>
-            </div>
-        </div>
-        <div class="form-group mt-4 mb-2 form-floating">
-            <input [disabled]="isDisabled" #verifyPassw="ngModel" [(ngModel)]="confirmPassword" [type]="type" id="confirmPassword" class="form-control bg-light" name="confirmPassword"
-                aria-describedby="confirmPassword" placeholder="" required appPasswordValidation="{{passw.value}}">
-            <label for="confirmPassword">Confirm Password</label>
-            <div *ngIf="verifyPassw.invalid" class="invalid-feedback">
-                <div *ngIf="verifyPassw.errors?.['required']">
-                    Verify password
-                </div>
-                <div *ngIf="verifyPassw.errors?.['password'] && verifyPassw.value !== ''">
-                    Passwords don't match
-                </div>
-            </div>
-        </div>
-        <div class="form-check mb-4">
-            <input class="form-check-input border-secondary" type="checkbox" value="" id="showPassword"
-                (change)="showPassword()">
-            <label class="form-check-label" for="showPassword">
-                <small>show password</small>
-            </label>
-        </div>
-        <div class="form-group mb-4">
-            <button *ngIf="!isDisabled" (click)="signup(signUpForm)" class="btn btn-secondary w-100">Sign Up</button>
-            <button *ngIf="isDisabled" class="btn btn-secondary w-100" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            </button>
         </div>
         <div class="row">
-            <div class="col text-center">
-                <small><a class="link-dark" routerLink="/session/provider-login">Already a provider?</a></small>
+            <div class="col-md-6 col-sm-12 py-5">
+                <div class="card shadow m-auto custom-card">
+                    <div class="card-body p-5">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Service Areas</h3>
+                                <p class="text-muted">Define your service coverage areas to connect with local customers in your target market</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Simple Quote Revisions</h3>
+                                <p class="text-muted">Easily modify and update service quotes based on customer requirements</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Invoices Generated Automatically</h3>
+                                <p class="text-muted">Professional service invoices created and sent automatically after service completion</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>0% Selling Fee <span class="nowrap border border-dark text-dark fw-bolder px-2 py-1 rounded-1 shadow-sm small align-middle">first 90 days</span></h3>
+                                <p class="text-muted">Start your service business with no platform fees for the first 90 days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 py-5">
+                <div class="card shadow m-auto custom-card">
+                    <div class="card-body p-5">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Subscription Services</h3>
+                                <p class="text-muted">Offer recurring service subscriptions with flexible billing options</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Service Schedules</h3>
+                                <p class="text-muted">Manage your service availability and calendar efficiently</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Business Profile</h3>
+                                <p class="text-muted">Showcase your service business with a professional profile page</p>
+                            </div>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="row py-2">
+                            <div class="col">
+                                <h3>Custom Promo Codes</h3>
+                                <p class="text-muted">Create and manage promotional offers to attract new service customers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
-</div>
+    </section>
+
+    <!-- Sign Up Section -->
+    <section class="container mb-5 pt-lg-5" aria-labelledby="signup-heading">
+        <fieldset class="ad-container">
+            <legend>Advertisement</legend>
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-5202373050833043"
+                data-ad-slot="9330778303"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+                aria-label="Advertisement">
+            </ins>
+        </fieldset> 
+        <hr>
+        <h2 id="signup-heading" class="alice-font text-custom display-3 text-center">Sign Up Today</h2>
+        <p class="text-muted text-center mb-4 alice-font fw-normal lead">Join our service marketplace and start offering your professional services to customers in your area</p>
+        <ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="accountError">
+            Error creating account
+        </ngb-alert>
+        <form class="card-width m-auto" #sf #signUpForm="ngForm" novalidate>
+            <div class="form-floating my-4">
+                <input [disabled]="isDisabled" #emailInput="ngModel" [(ngModel)]="email" type="email" id="email" class="form-control bg-light" name="email" aria-describedby="email"
+                    placeholder="" required appEmailValidation>
+                <label for="email">Email</label>
+                <div *ngIf="emailInput.invalid" class="invalid-feedback">
+                    <div *ngIf="emailInput.errors?.['required']">
+                        Please provide your email
+                    </div>
+                    <div *ngIf="emailInput.errors?.['email'] && email !== ''">
+                        Please enter a valid email address
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating my-4">
+                <input [disabled]="isDisabled" #passwordInput="ngModel" [(ngModel)]="password" [type]="type" id="password" class="form-control bg-light" name="password" aria-describedby="password"
+                    placeholder="" required appPasswordValidation>
+                <label for="password">Password</label>
+                <div *ngIf="passwordInput.invalid" class="invalid-feedback">
+                    <div *ngIf="passwordInput.errors?.['required']">
+                        Please provide a password
+                    </div>
+                    <div *ngIf="passwordInput.errors?.['password'] && password !== ''">
+                        Password must be at least 8 characters long and include a number
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating my-4">
+                <input [disabled]="isDisabled" #confirmPasswordInput="ngModel" [(ngModel)]="confirmPassword" [type]="type" id="confirmPassword" class="form-control bg-light" name="confirmPassword" aria-describedby="confirmPassword"
+                    placeholder="" required appPasswordValidation>
+                <label for="confirmPassword">Confirm Password</label>
+                <div *ngIf="confirmPasswordInput.invalid" class="invalid-feedback">
+                    <div *ngIf="confirmPasswordInput.errors?.['required']">
+                        Please confirm your password
+                    </div>
+                    <div *ngIf="confirmPasswordInput.errors?.['password'] && confirmPassword !== ''">
+                        Password must be at least 8 characters long and include a number
+                    </div>
+                </div>
+            </div>
+            <div class="form-check my-4">
+                <input [disabled]="isDisabled" #showPasswordInput="ngModel" [(ngModel)]="showPassword" type="checkbox" id="showPassword" class="form-check-input bg-light" name="showPassword">
+                <label for="showPassword" class="form-check-label">Show Password</label>
+            </div>
+            <div class="d-grid gap-2">
+                <button [disabled]="isDisabled" (click)="signup(signUpForm)" class="btn btn-primary" type="submit">
+                    <span *ngIf="!isDisabled">Sign Up</span>
+                    <span *ngIf="isDisabled">Signing Up...</span>
+                </button>
+            </div>
+        </form>
+    </section>
+</main>

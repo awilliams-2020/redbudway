@@ -1,1 +1,16 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /session/
+Disallow: /provider/
+Disallow: /customer/
+
+# Sitemap location
 Sitemap: https://redbudway.com/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 10
